@@ -14,6 +14,13 @@ O Workshop CRM é uma aplicação web completa que oferece as seguintes funciona
 
 O sistema foi desenvolvido utilizando Spring Boot para o backend e Angular para o frontend, oferecendo uma interface moderna e responsiva.
 
+## Tecnologias Utilizadas
+
+- **Backend**: Spring Boot, Spring Data JPA, Spring Security
+- **Frontend**: Angular, Bootstrap
+- **Banco de Dados**: PostgreSQL
+- **Ferramentas**: JHipster, Liquibase, Maven
+
 ## Roadmap de Funcionalidades
 
 ### Já Implementado ✅
@@ -53,10 +60,6 @@ O sistema foi desenvolvido utilizando Spring Boot para o backend e Angular para 
   - Calendário de disponibilidade da oficina
   - Agendamento de serviços pelo cliente via portal
   - Confirmações automáticas e lembretes
-
-- **Aplicativo Mobile**:
-  - Versão para dispositivos móveis para clientes acompanharem seus serviços
-  - Notificações push sobre andamento de serviços
 
 ## Executando a Aplicação
 
@@ -155,10 +158,3 @@ O sistema vem pré-configurado com dados de exemplo para facilitar os testes:
 - **Ordens de Serviço**: 10 ordens de serviço em diferentes status
 
 Estes dados permitem testar todas as funcionalidades do sistema imediatamente após a instalação.
-
-## Tecnologias Utilizadas
-
-- **Backend**: Spring Boot, Spring Data JPA, Spring Security
-- **Frontend**: Angular, Bootstrap
-- **Banco de Dados**: PostgreSQL
-- **Ferramentas**: JHipster, Liquibase, Maven
