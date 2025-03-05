@@ -1,7 +1,8 @@
 @import 'bootstrap-variables';
 @import 'bootstrap/scss/functions';
-@import 'bootswatch/dist/quartz/variables';
+@import 'bootswatch/dist/darkly/variables';
 @import 'bootstrap/scss/variables';
+@import '@ng-select/ng-select/themes/default.theme.css';
 
 /* ==============================================================
 Bootstrap tweaks
@@ -44,6 +45,8 @@ Generic styles
   padding: 1.5%;
   margin-top: 20px;
   border: none;
+  background-color: $card-bg;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
 .error {
@@ -69,12 +72,15 @@ Generic styles
 }
 
 .readonly {
-  background-color: #eee;
-  opacity: 1;
+  background-color: $input-bg;
+  opacity: 0.7;
 }
 
 .footer {
-  border-top: 1px solid rgba(0, 0, 0, 0.125);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: $dark;
+  color: $light;
+  padding: 1rem 0;
 }
 
 .hand,
@@ -132,6 +138,15 @@ entity list page css
   margin: auto 0;
 }
 
+/* Estilização adicional para tabelas no tema escuro */
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.table {
+  color: $body-color;
+}
+
 /* ==========================================================================
 entity detail page css
 ========================================================================== */
@@ -154,7 +169,7 @@ entity detail page css
       padding: 0.5em 0;
     }
     dd {
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       padding: 0.5em 0;
       margin-left: 0;
     }
@@ -197,10 +212,65 @@ angular-cli removes postcss-rtl processed inline css, processed rules must be ad
 
 /* navbar.component.scss */
 .navbar {
+  background-color: $dark;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+
   ul.navbar-nav {
     .nav-item {
       margin-left: 0.5em;
     }
   }
 }
+
+/* Estilização adicional para cards no tema escuro */
+.card {
+  background-color: $card-bg;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  .card-header {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .card-body {
+    background-color: $card-bg;
+  }
+}
+
+/* Estilização para badges */
+.badge {
+  &.bg-success,
+  &.bg-info,
+  &.bg-warning,
+  &.bg-danger {
+    color: $white;
+  }
+}
+
+/* Estilização para inputs */
+.form-control {
+  background-color: $input-bg;
+  color: $input-color;
+  border-color: $input-border-color;
+
+  &:focus {
+    background-color: $input-focus-bg;
+    color: $input-focus-color;
+    border-color: $input-focus-border-color;
+    box-shadow: 0 0 0 0.25rem rgba($primary, 0.25);
+  }
+}
+
+/* Estilização para botões */
+.btn {
+  &.btn-primary,
+  &.btn-secondary,
+  &.btn-success,
+  &.btn-info,
+  &.btn-warning,
+  &.btn-danger {
+    color: $white;
+  }
+}
+
 /* jhipster-needle-scss-add-main JHipster will add new css style */

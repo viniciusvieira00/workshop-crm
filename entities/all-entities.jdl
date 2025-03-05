@@ -1,0 +1,220 @@
+/**
+ * Enum para o status do veículo
+ */
+enum VehicleStatus {
+  AVAILABLE,
+  UNDER_MAINTENANCE,
+  WAITING_MAINTENANCE,
+  OUT_OF_SERVICE,
+  DELIVERED_TO_CUSTOMER
+}
+
+/**
+ * Enum para o tipo de cliente
+ */
+enum ClientType {
+  INDIVIDUAL,
+  COMPANY
+}
+
+/**
+ * Enum para o status da ordem de serviço
+ */
+enum ServiceOrderStatus {
+  CREATED,
+  IN_PROGRESS,
+  COMPLETED,
+  CANCELED
+}
+
+/**
+ * Entidade Client
+ * - ID gerado automaticamente pelo JHipster
+ * - CPF/CNPJ, nome e email obrigatórios
+ * - Validações para CPF/CNPJ e email
+ * - Campos de auditoria incluídos
+ */
+entity Client {
+  /** CPF (11 digitos) ou CNPJ (14 digitos) */
+  documentNumber String required pattern(/^[0-9]{11,14}$/) unique,
+  name String required minlength(3) maxlength(100),
+  email String required pattern(/^[^@\s]+@[^@\s]+\.[^@\s]+$/) unique,
+  phoneNumber String required pattern(/^[0-9]{10,11}$/),
+  alternativePhoneNumber String pattern(/^[0-9]{10,11}$/),
+  address String required,
+  city String required,
+  state String required,
+  zipCode String required pattern(/^[0-9]{8}$/),
+  clientType ClientType required,
+  notes String maxlength(1000),
+  
+  /** Campos de auditoria */
+  createdBy String,
+  createdDate Instant,
+  lastModifiedBy String,
+  lastModifiedDate Instant
+}
+
+/**
+ * Entidade Vehicle
+ * - ID gerado automaticamente pelo JHipster
+ * - Campos de descrição do veículo
+ * - Status como enum
+ * - Validações para placa e outros campos
+ * - Campos de auditoria incluídos
+ */
+entity Vehicle {
+  /** Formato: ABC1234 ou ABC1D23 */
+  licensePlate String required pattern(/^[A-Z0-9]{7}$/) unique,
+  model String required minlength(2) maxlength(50),
+  brand String required minlength(2) maxlength(50),
+  fabricationDate LocalDate required,
+  modelYear Integer required min(1900) max(2100),
+  color String required,
+  renavam String pattern(/^[0-9]{9,11}$/) unique,
+  fuelType String required,
+  chassiNumber String pattern(/^[A-Z0-9]{17}$/) unique,
+  currentMileage Integer required min(0),
+  lastMaintenanceDate LocalDate,
+  lastMaintenanceMileage Integer min(0),
+  nextMaintenanceDate LocalDate,
+  nextMaintenanceMileage Integer min(0),
+  description String maxlength(1000),
+  status VehicleStatus required,
+  
+  /** Campos de auditoria */
+  createdBy String,
+  createdDate Instant,
+  lastModifiedBy String,
+  lastModifiedDate Instant
+}
+
+/**
+ * Entidade ServiceOrderType
+ * - Tipos de ordens de serviço com preços padrão
+ * - ID gerado automaticamente pelo JHipster
+ */
+entity ServiceOrderType {
+  /** Nome do tipo de serviço */
+  name String required minlength(2) maxlength(100),
+  /** Descrição detalhada do tipo de serviço */
+  description String maxlength(1000),
+  /** Preço padrão do serviço */
+  price BigDecimal required min(0),
+  
+  /** Campos de auditoria */
+  createdBy String,
+  createdDate Instant,
+  lastModifiedBy String,
+  lastModifiedDate Instant
+}
+
+/**
+ * Entidade Product
+ * - Produtos utilizados nas ordens de serviço
+ * - ID gerado automaticamente pelo JHipster
+ */
+entity Product {
+  /** Nome do produto */
+  name String required minlength(2) maxlength(100),
+  /** Descrição do produto */
+  description String maxlength(1000),
+  /** Marca do produto */
+  brand String maxlength(50),
+  /** Preço de custo */
+  costPrice BigDecimal min(0),
+  /** Preço de venda */
+  sellPrice BigDecimal required min(0),
+  
+  /** Campos de auditoria */
+  createdBy String,
+  createdDate Instant,
+  lastModifiedBy String,
+  lastModifiedDate Instant
+}
+
+/**
+ * Entidade ServiceOrder
+ * - Ordens de serviço para veículos
+ * - ID gerado automaticamente pelo JHipster
+ * - Relacionada com Vehicle e ServiceOrderType
+ */
+entity ServiceOrder {
+  /** Data de criação da ordem de serviço */
+  creationDate Instant required,
+  /** Data de início do serviço */
+  startDate Instant,
+  /** Data de conclusão do serviço */
+  completionDate Instant,
+  /** Custo inicial estimado */
+  initialCost BigDecimal min(0),
+  /** Custos adicionais */
+  additionalCost BigDecimal min(0),
+  /** Custo total da ordem de serviço */
+  totalCost BigDecimal min(0),
+  /** Observações sobre o serviço */
+  notes String maxlength(2000),
+  /** Status da ordem de serviço */
+  status ServiceOrderStatus required,
+  
+  /** Campos de auditoria */
+  createdBy String,
+  createdDate Instant,
+  lastModifiedBy String,
+  lastModifiedDate Instant
+}
+
+/**
+ * Relacionamento 1-N entre Client e Vehicle:
+ * - Client "possui" vários Vehicles
+ * - Cada Vehicle pertence a um Client
+ * - Em Vehicle, mostra o 'name' do cliente no dropdown
+ * - "required" indica que Vehicle não pode existir sem Client
+ */
+relationship OneToMany {
+  Client{vehicles} to Vehicle{client(name) required}
+}
+
+/**
+ * Relacionamento entre ServiceOrderType e ServiceOrder
+ * - Um tipo de serviço pode ter várias ordens de serviço
+ * - Cada ordem de serviço tem um tipo específico
+ */
+relationship ManyToOne {
+  ServiceOrder{type(name) required} to ServiceOrderType
+}
+
+/**
+ * Relacionamento entre Vehicle e ServiceOrder
+ * - Um veículo pode ter várias ordens de serviço
+ * - Cada ordem de serviço está associada a um veículo específico
+ */
+relationship ManyToOne {
+  ServiceOrder{vehicle(licensePlate) required} to Vehicle
+}
+
+/**
+ * Relacionamento entre ServiceOrder e Product
+ * - Uma ordem de serviço pode utilizar vários produtos
+ * - Um produto pode ser utilizado em várias ordens de serviço
+ */
+relationship ManyToMany {
+  ServiceOrder{products(name)} to Product{serviceOrders}
+}
+
+/**
+ * Opções para geração de código:
+ * - MapStruct para DTO
+ * - ServiceClass para criar camada de serviço
+ * - Paginação
+ * - Filtros para busca avançada
+ */
+dto * with mapstruct
+service * with serviceClass
+paginate * with pagination
+filter Client, Vehicle, ServiceOrder, ServiceOrderType, Product
+
+/**
+ * Opções de UI
+ */
+clientRootFolder Client, Vehicle, ServiceOrder, ServiceOrderType, Product with crm 

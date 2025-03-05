@@ -4,3 +4,57 @@
  * https://github.com/twbs/bootstrap/blob/v5.1.3/scss/_variables.scss can be overwritten here
  * Make sure not to add !default to values here
  */
+
+// Cores principais do tema escuro
+$primary: #375a7f;
+$secondary: #444;
+$success: #00bc8c;
+$info: #3498db;
+$warning: #f39c12;
+$danger: #e74c3c;
+$light: #adb5bd;
+$dark: #303030;
+
+// Configurações de fundo e texto
+$body-bg: #222;
+$body-color: #fff;
+
+// Configurações de cards
+$card-bg: #303030;
+$card-border-color: rgba(0, 0, 0, 0.6);
+$card-cap-bg: #444;
+
+// Configurações de tabelas
+$table-bg: #303030;
+$table-border-color: #444;
+$table-hover-bg: #375a7f;
+$table-hover-color: #fff;
+
+// Configurações de formulários
+$input-bg: #444;
+$input-color: #fff;
+$input-border-color: #555;
+$input-focus-bg: #444;
+$input-focus-color: #fff;
+$input-focus-border-color: #375a7f;
+$input-placeholder-color: #888;
+
+// Configurações de botões
+$btn-hover-bg-shade-amount: 30%;
+$btn-hover-bg-tint-amount: 30%;
+$btn-hover-border-shade-amount: 30%;
+$btn-hover-border-tint-amount: 30%;
+
+// Configurações de dropdown
+$dropdown-bg: #303030;
+$dropdown-border-color: rgba(0, 0, 0, 0.6);
+$dropdown-divider-bg: #444;
+$dropdown-link-color: #fff;
+$dropdown-link-hover-color: #fff;
+$dropdown-link-hover-bg: #375a7f;
+
+// Configurações de modal
+$modal-content-bg: #303030;
+$modal-content-border-color: rgba(0, 0, 0, 0.6);
+$modal-header-border-color: #444;
+$modal-footer-border-color: #444;

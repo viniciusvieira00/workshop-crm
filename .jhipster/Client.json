@@ -1,0 +1,108 @@
+{
+  "annotations": {
+    "changelogDate": "20250305013936"
+  },
+  "applications": "*",
+  "clientRootFolder": "crm",
+  "documentation": "Entidade Client\\n- ID gerado automaticamente pelo JHipster\\n- CPF/CNPJ, nome e email obrigatórios\\n- Validações para CPF/CNPJ e email\\n- Campos de auditoria incluídos",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "documentation": "CPF (11 digitos) ou CNPJ (14 digitos)",
+      "fieldName": "documentNumber",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "pattern", "unique"],
+      "fieldValidateRulesPattern": "^[0-9]{11,14}$"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength", "maxlength"],
+      "fieldValidateRulesMaxlength": "100",
+      "fieldValidateRulesMinlength": "3"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "pattern", "unique"],
+      "fieldValidateRulesPattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+    },
+    {
+      "fieldName": "phoneNumber",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "pattern"],
+      "fieldValidateRulesPattern": "^[0-9]{10,11}$"
+    },
+    {
+      "fieldName": "alternativePhoneNumber",
+      "fieldType": "String",
+      "fieldValidateRules": ["pattern"],
+      "fieldValidateRulesPattern": "^[0-9]{10,11}$"
+    },
+    {
+      "fieldName": "address",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "city",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "state",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "zipCode",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "pattern"],
+      "fieldValidateRulesPattern": "^[0-9]{8}$"
+    },
+    {
+      "fieldName": "clientType",
+      "fieldType": "ClientType",
+      "fieldTypeDocumentation": "Enum para o tipo de cliente",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "INDIVIDUAL,COMPANY"
+    },
+    {
+      "fieldName": "notes",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "1000"
+    },
+    {
+      "documentation": "Campos de auditoria",
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Client",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "vehicle",
+      "otherEntityRelationshipName": "client",
+      "relationshipName": "vehicles",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

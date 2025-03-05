@@ -1,0 +1,138 @@
+{
+  "annotations": {
+    "changelogDate": "20250305013937"
+  },
+  "applications": "*",
+  "clientRootFolder": "crm",
+  "documentation": "Entidade Vehicle\\n- ID gerado automaticamente pelo JHipster\\n- Campos de descrição do veículo\\n- Status como enum\\n- Validações para placa e outros campos\\n- Campos de auditoria incluídos",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "documentation": "Formato: ABC1234 ou ABC1D23",
+      "fieldName": "licensePlate",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "pattern", "unique"],
+      "fieldValidateRulesPattern": "^[A-Z0-9]{7}$"
+    },
+    {
+      "fieldName": "model",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength", "maxlength"],
+      "fieldValidateRulesMaxlength": "50",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "brand",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength", "maxlength"],
+      "fieldValidateRulesMaxlength": "50",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "fieldName": "fabricationDate",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "modelYear",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMax": "2100",
+      "fieldValidateRulesMin": "1900"
+    },
+    {
+      "fieldName": "color",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "renavam",
+      "fieldType": "String",
+      "fieldValidateRules": ["pattern", "unique"],
+      "fieldValidateRulesPattern": "^[0-9]{9,11}$"
+    },
+    {
+      "fieldName": "fuelType",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "chassiNumber",
+      "fieldType": "String",
+      "fieldValidateRules": ["pattern", "unique"],
+      "fieldValidateRulesPattern": "^[A-Z0-9]{17}$"
+    },
+    {
+      "fieldName": "currentMileage",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "lastMaintenanceDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "lastMaintenanceMileage",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "nextMaintenanceDate",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "nextMaintenanceMileage",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "1000"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "VehicleStatus",
+      "fieldTypeDocumentation": "Enum para o status do veículo",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "AVAILABLE,UNDER_MAINTENANCE,WAITING_MAINTENANCE,OUT_OF_SERVICE,DELIVERED_TO_CUSTOMER"
+    },
+    {
+      "documentation": "Campos de auditoria",
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "Vehicle",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "client",
+      "otherEntityRelationshipName": "vehicles",
+      "relationshipName": "client",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

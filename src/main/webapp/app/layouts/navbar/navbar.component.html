@@ -29,6 +29,30 @@
         </li>
         <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
         @if (account() !== null) {
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link" routerLink="/client" (click)="collapseNavbar()">
+              <span>
+                <fa-icon icon="users"></fa-icon>
+                <span>Clientes</span>
+              </span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link" routerLink="/vehicle" (click)="collapseNavbar()">
+              <span>
+                <fa-icon icon="car"></fa-icon>
+                <span>Veículos</span>
+              </span>
+            </a>
+          </li>
+          <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+            <a class="nav-link" routerLink="/service-order" (click)="collapseNavbar()">
+              <span>
+                <fa-icon icon="tools"></fa-icon>
+                <span>Ordens de Serviço</span>
+              </span>
+            </a>
+          </li>
           <li
             ngbDropdown
             class="nav-item dropdown pointer"
@@ -39,10 +63,34 @@
             <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu" data-cy="entity">
               <span>
                 <fa-icon icon="th-list"></fa-icon>
-                <span>Entidades</span>
+                <span>Cadastros</span>
               </span>
             </a>
             <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="entity-menu">
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/service-order-type"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="list-alt" [fixedWidth]="true"></fa-icon>
+                  <span>Tipos de Serviço</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item"
+                  routerLink="/product"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
+                  (click)="collapseNavbar()"
+                >
+                  <fa-icon icon="box" [fixedWidth]="true"></fa-icon>
+                  <span>Produtos</span>
+                </a>
+              </li>
               <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
             </ul>
           </li>

@@ -1,0 +1,56 @@
+{
+  "annotations": {
+    "changelogDate": "20250305052918"
+  },
+  "applications": "*",
+  "clientRootFolder": "crm",
+  "documentation": "Entidade ServiceOrderType\\n- Tipos de ordens de serviço com preços padrão\\n- ID gerado automaticamente pelo JHipster",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "documentation": "Nome do tipo de serviço",
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "minlength", "maxlength"],
+      "fieldValidateRulesMaxlength": "100",
+      "fieldValidateRulesMinlength": "2"
+    },
+    {
+      "documentation": "Descrição detalhada do tipo de serviço",
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "1000"
+    },
+    {
+      "documentation": "Preço padrão do serviço",
+      "fieldName": "price",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required", "min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "documentation": "Campos de auditoria",
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "ServiceOrderType",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

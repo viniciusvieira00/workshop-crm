@@ -1,0 +1,111 @@
+{
+  "annotations": {
+    "changelogDate": "20250305052920"
+  },
+  "applications": "*",
+  "clientRootFolder": "crm",
+  "documentation": "Entidade ServiceOrder\\n- Ordens de serviço para veículos\\n- ID gerado automaticamente pelo JHipster\\n- Relacionada com Vehicle e ServiceOrderType",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "documentation": "Data de criação da ordem de serviço",
+      "fieldName": "creationDate",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "documentation": "Data de início do serviço",
+      "fieldName": "startDate",
+      "fieldType": "Instant"
+    },
+    {
+      "documentation": "Data de conclusão do serviço",
+      "fieldName": "completionDate",
+      "fieldType": "Instant"
+    },
+    {
+      "documentation": "Custo inicial estimado",
+      "fieldName": "initialCost",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "documentation": "Custos adicionais",
+      "fieldName": "additionalCost",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "documentation": "Custo total da ordem de serviço",
+      "fieldName": "totalCost",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "documentation": "Observações sobre o serviço",
+      "fieldName": "notes",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "2000"
+    },
+    {
+      "documentation": "Status da ordem de serviço",
+      "fieldName": "status",
+      "fieldType": "ServiceOrderStatus",
+      "fieldTypeDocumentation": "Enum para o status da ordem de serviço",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "CREATED,IN_PROGRESS,COMPLETED,CANCELED"
+    },
+    {
+      "documentation": "Campos de auditoria",
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "createdDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "lastModifiedBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastModifiedDate",
+      "fieldType": "Instant"
+    }
+  ],
+  "jpaMetamodelFiltering": true,
+  "name": "ServiceOrder",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "serviceOrderType",
+      "relationshipName": "type",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityField": "licensePlate",
+      "otherEntityName": "vehicle",
+      "relationshipName": "vehicle",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": "required"
+    },
+    {
+      "otherEntityField": "name",
+      "otherEntityName": "product",
+      "otherEntityRelationshipName": "serviceOrders",
+      "relationshipName": "products",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}
