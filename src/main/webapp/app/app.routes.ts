@@ -34,6 +34,11 @@ const routes: Routes = [
     title: 'login.title',
   },
   {
+    path: 'dashboard',
+    redirectTo: '',
+    pathMatch: 'full',
+  },
+  {
     path: '',
     loadChildren: () => import(`./entities/entity.routes`),
   },

@@ -8,7 +8,7 @@
 <div class="row">
   <div class="col-md-12">
     @if (account() !== null) {
-      <div class="alert alert-success">
+      <div class="alert alert-success mb-4">
         @if (account(); as accountRef) {
           <span id="home-logged-message">
             Você está logado como <strong>"{{ accountRef.login }}"</strong>
@@ -19,14 +19,8 @@
         }
       </div>
 
-      <div class="dashboard-container mt-4 p-4 border rounded">
-        <h2 class="mb-4">Dashboard</h2>
-        <div class="row">
-          <div class="col-md-12 text-center">
-            <p>O dashboard será implementado em breve.</p>
-          </div>
-        </div>
-      </div>
+      <!-- Integração do Dashboard -->
+      <jhi-dashboard></jhi-dashboard>
     } @else {
       <div class="alert alert-warning">
         <span>Se deseja </span>
@@ -40,6 +34,40 @@
       <div class="alert alert-warning">
         <span>Não possui uma conta ainda?</span>&nbsp;
         <a class="alert-link" routerLink="/account/register">Crie uma nova conta</a>
+      </div>
+
+      <div class="card mt-4">
+        <div class="card-body text-center">
+          <h3 class="mb-3">Workshop CRM - Gerencie sua oficina com eficiência</h3>
+          <p class="lead">
+            Uma solução completa para gerenciamento de oficinas mecânicas, com controle de clientes, veículos, ordens de serviço e análise
+            de dados.
+          </p>
+          <div class="row mt-4">
+            <div class="col-md-4">
+              <div class="feature-box">
+                <fa-icon icon="users" size="3x" class="text-primary mb-3"></fa-icon>
+                <h4>Gestão de Clientes</h4>
+                <p>Cadastre e gerencie seus clientes de forma simples e eficiente.</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="feature-box">
+                <fa-icon icon="tools" size="3x" class="text-primary mb-3"></fa-icon>
+                <h4>Ordens de Serviço</h4>
+                <p>Controle completo das ordens de serviço, desde a criação até a conclusão.</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="feature-box">
+                <fa-icon icon="chart-bar" size="3x" class="text-primary mb-3"></fa-icon>
+                <h4>Dashboard Analítico</h4>
+                <p>Visualize dados importantes do seu negócio em tempo real.</p>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-lg mt-4" (click)="login()">Começar Agora</button>
+        </div>
       </div>
     }
   </div>
