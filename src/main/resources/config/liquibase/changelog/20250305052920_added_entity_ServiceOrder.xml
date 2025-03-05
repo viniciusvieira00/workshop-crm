@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <!--
+        Added the entity ServiceOrder.
+    -->
+    <changeSet id="20250305052920-1" author="jhipster">
+        <createTable tableName="service_order" remarks="Entidade ServiceOrder\n- Ordens de serviço para veículos\n- ID gerado automaticamente pelo JHipster\n- Relacionada com Vehicle e ServiceOrderType">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="creation_date" type="${datetimeType}" remarks="Data de criação da ordem de serviço">
+                <constraints nullable="false" />
+            </column>
+            <column name="start_date" type="${datetimeType}" remarks="Data de início do serviço">
+                <constraints nullable="true" />
+            </column>
+            <column name="completion_date" type="${datetimeType}" remarks="Data de conclusão do serviço">
+                <constraints nullable="true" />
+            </column>
+            <column name="initial_cost" type="decimal(21,2)" remarks="Custo inicial estimado">
+                <constraints nullable="true" />
+            </column>
+            <column name="additional_cost" type="decimal(21,2)" remarks="Custos adicionais">
+                <constraints nullable="true" />
+            </column>
+            <column name="total_cost" type="decimal(21,2)" remarks="Custo total da ordem de serviço">
+                <constraints nullable="true" />
+            </column>
+            <column name="notes" type="varchar(2000)" remarks="Observações sobre o serviço">
+                <constraints nullable="true" />
+            </column>
+            <column name="status" type="varchar(255)" remarks="Status da ordem de serviço">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_by" type="varchar(255)" remarks="Campos de auditoria">
+                <constraints nullable="true" />
+            </column>
+            <column name="created_date" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_modified_by" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="last_modified_date" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
+            <column name="type_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="vehicle_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
+        </createTable>
+        <dropDefaultValue tableName="service_order" columnName="creation_date" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="service_order" columnName="start_date" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="service_order" columnName="completion_date" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="service_order" columnName="created_date" columnDataType="${datetimeType}"/>
+        <dropDefaultValue tableName="service_order" columnName="last_modified_date" columnDataType="${datetimeType}"/>
+    </changeSet>
+
+    <changeSet id="20250305052920-1-relations" author="jhipster">
+
+        <createTable tableName="rel_service_order__products">
+            <column name="products_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="service_order_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="service_order_id, products_id" tableName="rel_service_order__products"/>
+    </changeSet>
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
+
+    <!--
+        Load sample data generated with Faker.js
+        - This data can be easily edited using a CSV editor (or even MS Excel) and
+          is located in the 'src/main/resources/config/liquibase/fake-data' directory
+        - By default this data is applied when running with the JHipster 'dev' profile.
+          This can be customized by adding or removing 'faker' in the 'spring.liquibase.contexts'
+          Spring Boot configuration key.
+    -->
+    <changeSet id="20250305052920-1-data" author="jhipster" context="faker">
+        <loadData
+                  file="config/liquibase/fake-data/service_order.csv"
+                  separator=";"
+                  tableName="service_order"
+                  usePreparedStatements="true">
+            <column name="id" type="numeric"/>
+            <column name="creation_date" type="date"/>
+            <column name="start_date" type="date"/>
+            <column name="completion_date" type="date"/>
+            <column name="initial_cost" type="numeric"/>
+            <column name="additional_cost" type="numeric"/>
+            <column name="total_cost" type="numeric"/>
+            <column name="notes" type="string"/>
+            <column name="status" type="string"/>
+            <column name="created_by" type="string"/>
+            <column name="created_date" type="date"/>
+            <column name="last_modified_by" type="string"/>
+            <column name="last_modified_date" type="date"/>
+            <column name="type_id" type="numeric"/>
+            <column name="vehicle_id" type="numeric"/>
+            <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
+        </loadData>
+    </changeSet>
+</databaseChangeLog>

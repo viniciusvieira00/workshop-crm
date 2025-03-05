@@ -1,0 +1,11 @@
+id;name;description;brand;cost_price;sell_price;created_by;created_date;last_modified_by;last_modified_date
+1;Óleo Motor 5W30 Sintético;Óleo lubrificante sintético para motores flex e gasolina;Shell;85.50;120.00;system;2023-03-04T08:52:30;system;2023-03-05T04:46:50
+2;Filtro de Óleo;Filtro de óleo compatível com veículos nacionais e importados;Tecfil;18.75;35.00;system;2023-03-05T04:26:02;system;2023-03-05T00:51:20
+3;Pastilha de Freio Dianteira;Jogo de pastilhas de freio para veículos de passeio;Frasle;65.30;110.00;system;2023-03-05T01:24:24;system;2023-03-04T16:00:39
+4;Bateria 60Ah;Bateria automotiva selada, livre de manutenção;Moura;320.00;450.00;system;2023-03-04T16:52:50;system;2023-03-04T10:03:41
+5;Filtro de Ar;Filtro de ar do motor para veículos leves;Mann;25.40;45.00;system;2023-03-05T00:17:34;system;2023-03-05T00:09:27
+6;Correia Dentada;Kit correia dentada com tensor para motores 1.0 a 1.6;Gates;120.50;195.00;system;2023-03-04T14:47:20;system;2023-03-04T21:10:33
+7;Amortecedor Dianteiro;Par de amortecedores dianteiros para veículos compactos;Monroe;280.00;420.00;system;2023-03-04T12:24:05;system;2023-03-04T19:24:14
+8;Vela de Ignição;Jogo com 4 velas de ignição para motores flex;NGK;75.60;120.00;system;2023-03-04T13:14:45;system;2023-03-04T16:34:46
+9;Fluido de Freio DOT 4;Fluido de freio de alta performance, frasco com 500ml;Bosch;22.50;38.00;system;2023-03-04T20:47:20;system;2023-03-04T19:56:50
+10;Filtro de Combustível;Filtro de combustível universal para veículos flex;Fram;18.90;35.00;system;2023-03-05T00:32:05;system;2023-03-05T00:55:02

@@ -1,0 +1,11 @@
+id;name;description;price;created_by;created_date;last_modified_by;last_modified_date
+1;Troca de Óleo;Troca de óleo do motor com filtro de óleo incluso;150.00;system;2023-03-05T00:00:39;system;2023-03-04T17:30:00
+2;Revisão Básica;Checagem de 15 itens, troca de óleo e filtros;350.00;system;2023-03-05T05:07:39;system;2023-03-04T22:41:13
+3;Revisão Completa;Checagem de 30 itens, troca de óleo, filtros e verificação de sistemas;650.00;system;2023-03-04T17:34:20;system;2023-03-05T01:33:21
+4;Alinhamento e Balanceamento;Alinhamento computadorizado e balanceamento das 4 rodas;180.00;system;2023-03-05T01:24:14;system;2023-03-04T15:31:44
+5;Troca de Pastilhas de Freio;Substituição das pastilhas de freio dianteiras;220.00;system;2023-03-04T21:02:15;system;2023-03-05T04:33:48
+6;Diagnóstico Eletrônico;Leitura e diagnóstico de falhas com scanner automotivo;120.00;system;2023-03-04T09:37:04;system;2023-03-05T03:56:55
+7;Troca de Bateria;Substituição de bateria com teste do sistema de carga;80.00;system;2023-03-04T07:31:05;system;2023-03-04T12:16:25
+8;Higienização de Ar Condicionado;Limpeza e higienização do sistema de ar condicionado;250.00;system;2023-03-04T15:14:38;system;2023-03-04T06:05:57
+9;Troca de Correia Dentada;Substituição do kit de correia dentada com tensor;380.00;system;2023-03-04T14:10:50;system;2023-03-05T04:37:45
+10;Reparo de Suspensão;Verificação e reparo do sistema de suspensão;450.00;system;2023-03-04T11:33:23;system;2023-03-04T19:47:20
