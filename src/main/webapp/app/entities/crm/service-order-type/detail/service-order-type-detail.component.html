@@ -1,0 +1,95 @@
+<div class="service-order-type-detail">
+  <div *ngIf="serviceOrderType">
+    <div class="detail-header">
+      <h2 data-cy="serviceOrderTypeDetailsHeading">
+        <span>Tipo de Ordem de Serviço</span>
+      </h2>
+    </div>
+
+    <!-- Informações Básicas -->
+    <div class="detail-section">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Informações Básicas</h5>
+        </div>
+        <div class="card-body">
+          <div class="detail-row">
+            <div class="detail-label">Código</div>
+            <div class="detail-value">{{ serviceOrderType.id }}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Nome</div>
+            <div class="detail-value">{{ serviceOrderType.name || 'Não informado' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Descrição -->
+    <div class="detail-section">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Descrição</h5>
+        </div>
+        <div class="card-body">
+          <div class="detail-row">
+            <div class="detail-label">Descrição</div>
+            <div class="detail-value">{{ serviceOrderType.description || 'Não informado' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preço -->
+    <div class="detail-section">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Preço</h5>
+        </div>
+        <div class="card-body">
+          <div class="detail-row">
+            <div class="detail-label">Preço</div>
+            <div class="detail-value">R$ {{ serviceOrderType.price | number: '1.2-2' : 'pt-BR' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Informações de Auditoria -->
+    <div class="detail-section">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">Informações de Auditoria</h5>
+        </div>
+        <div class="card-body">
+          <div class="detail-row">
+            <div class="detail-label">Criado por</div>
+            <div class="detail-value">{{ serviceOrderType.createdBy || 'Não informado' }}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Criado em</div>
+            <div class="detail-value">{{ formatDate(serviceOrderType.createdDate) || 'Não informado' }}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Última modificação por</div>
+            <div class="detail-value">{{ serviceOrderType.lastModifiedBy || 'Não informado' }}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-label">Última modificação em</div>
+            <div class="detail-value">{{ formatDate(serviceOrderType.lastModifiedDate) || 'Não informado' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+      </button>
+
+      <button type="button" [routerLink]="['/service-order-type', serviceOrderType.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,104 @@
+/* Estilos para o link de email */
+.email-link {
+  color: #3498db;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.email-link:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+/* Estilos para o link de telefone */
+.phone-link {
+  color: #3498db;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.phone-link:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+/* Estilos para o tipo de cliente */
+.client-type {
+  display: inline-block;
+  padding: 6px 10px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.client-type.individual {
+  background-color: #375a7f;
+  color: white;
+}
+
+.client-type.company {
+  background-color: #00bc8c;
+  color: white;
+}
+
+/* Estilos para dados vazios */
+.text-muted {
+  color: #adb5bd;
+  font-style: italic;
+}
+
+/* Estilos para o texto de observações */
+.notes-text {
+  display: block;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table tbody td {
+  padding: 0.75rem;
+  vertical-align: middle;
+}
+
+/* Adicionar borda arredondada ao container da tabela */
+.table-entities.card {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: none;
+  background-color: #303030;
+}
+
+/* Estilos para botões na tabela */
+.btn-group {
+  .btn {
+    margin-left: 4px;
+  }
+}
+
+/* Estilos para o badge do tipo de cliente */
+.badge {
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.5px;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .d-none.d-md-inline {
+    display: none !important;
+  }
+
+  .btn-group .btn {
+    padding: 0.25rem 0.5rem;
+  }
+}

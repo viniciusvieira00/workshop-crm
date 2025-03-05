@@ -1,0 +1,170 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-service-order-type-heading" data-cy="ServiceOrderTypeCreateUpdateHeading">
+        {{ editForm.get('id')!.value ? 'Editar Tipo de Ordem de Serviço' : 'Criar Tipo de Ordem de Serviço' }}
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <!-- Informações Básicas -->
+        <div class="card mb-4">
+          <div class="card-header bg-light">
+            <h5 class="mb-0">Informações Básicas</h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3" [hidden]="editForm.get('id')!.value == null">
+              <label class="form-label" for="field_id">Código</label>
+              <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="field_name">Nome</label>
+              <input
+                type="text"
+                class="form-control"
+                name="name"
+                id="field_name"
+                data-cy="name"
+                formControlName="name"
+                [ngClass]="{
+                  'is-invalid': editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched),
+                }"
+              />
+              <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+                <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.required"> Este campo é obrigatório. </small>
+                <small class="form-text text-danger" *ngIf="editForm.get('name')?.errors?.maxlength">
+                  Este campo não pode ter mais de 100 caracteres.
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Descrição -->
+        <div class="card mb-4">
+          <div class="card-header bg-light">
+            <h5 class="mb-0">Descrição</h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label" for="field_description">Descrição</label>
+              <textarea
+                class="form-control"
+                name="description"
+                id="field_description"
+                data-cy="description"
+                formControlName="description"
+                rows="4"
+              ></textarea>
+              <div
+                *ngIf="editForm.get('description')!.invalid && (editForm.get('description')!.dirty || editForm.get('description')!.touched)"
+              >
+                <small class="form-text text-danger" *ngIf="editForm.get('description')?.errors?.maxlength">
+                  Este campo não pode ter mais de 500 caracteres.
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preço -->
+        <div class="card mb-4">
+          <div class="card-header bg-light">
+            <h5 class="mb-0">Preço</h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label" for="field_price">Preço</label>
+              <div class="input-group">
+                <span class="input-group-text">R$</span>
+                <input
+                  type="number"
+                  class="form-control"
+                  name="price"
+                  id="field_price"
+                  data-cy="price"
+                  formControlName="price"
+                  [ngClass]="{
+                    'is-invalid': editForm.get('price')!.invalid && (editForm.get('price')!.dirty || editForm.get('price')!.touched),
+                  }"
+                />
+              </div>
+              <div *ngIf="editForm.get('price')!.invalid && (editForm.get('price')!.dirty || editForm.get('price')!.touched)">
+                <small class="form-text text-danger" *ngIf="editForm.get('price')?.errors?.required"> Este campo é obrigatório. </small>
+                <small class="form-text text-danger" *ngIf="editForm.get('price')?.errors?.min"> Este campo deve ser maior que 0. </small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Campos de auditoria ocultos -->
+        <div [hidden]="true">
+          <div class="mb-3">
+            <label class="form-label" for="field_createdBy">Criado por</label>
+            <input type="text" class="form-control" name="createdBy" id="field_createdBy" data-cy="createdBy" formControlName="createdBy" />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="field_createdDate">Data de Criação</label>
+            <div class="d-flex">
+              <input
+                id="field_createdDate"
+                data-cy="createdDate"
+                type="datetime-local"
+                class="form-control"
+                name="createdDate"
+                formControlName="createdDate"
+                placeholder="YYYY-MM-DD HH:mm"
+              />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="field_lastModifiedBy">Última modificação por</label>
+            <input
+              type="text"
+              class="form-control"
+              name="lastModifiedBy"
+              id="field_lastModifiedBy"
+              data-cy="lastModifiedBy"
+              formControlName="lastModifiedBy"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="field_lastModifiedDate">Data da última modificação</label>
+            <div class="d-flex">
+              <input
+                id="field_lastModifiedDate"
+                data-cy="lastModifiedDate"
+                type="datetime-local"
+                class="form-control"
+                name="lastModifiedDate"
+                formControlName="lastModifiedDate"
+                placeholder="YYYY-MM-DD HH:mm"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salvar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

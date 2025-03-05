@@ -1,0 +1,110 @@
+/* Estilos para os componentes de Tipo de Ordem de Serviço */
+
+/* Estilos para a tabela de listagem */
+.table-entities {
+  margin-top: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table thead th {
+  border-bottom: 2px solid #dee2e6;
+  padding: 12px 15px;
+}
+
+.table tbody td {
+  padding: 12px 15px;
+  vertical-align: middle;
+}
+
+.price-column {
+  text-align: right;
+  font-weight: 500;
+}
+
+.date-column {
+  white-space: nowrap;
+}
+
+/* Estilos para os cards */
+.card {
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  border: none;
+  margin-bottom: 20px;
+}
+
+.card-header {
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.card-body {
+  padding: 20px;
+}
+
+/* Estilos para os botões */
+.btn-group .btn {
+  margin-left: 5px;
+}
+
+.btn-info {
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+  color: white;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+/* Estilos para o formulário */
+.form-label {
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.form-control {
+  padding: 10px 12px;
+  border-radius: 4px;
+  border: 1px solid #ced4da;
+}
+
+.form-control:focus {
+  border-color: #80bdff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.input-group-text {
+  background-color: #e9ecef;
+  border: 1px solid #ced4da;
+}
+
+/* Estilos para mensagens de erro */
+.form-text.text-danger {
+  font-size: 0.85rem;
+  margin-top: 5px;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .d-none.d-md-inline {
+    display: none !important;
+  }
+
+  .btn-group .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+  }
+}

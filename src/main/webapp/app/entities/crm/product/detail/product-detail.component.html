@@ -1,0 +1,140 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="product">
+      <h2 data-cy="productDetailsHeading">
+        <span>Produto #{{ product.id }}</span>
+      </h2>
+
+      <hr />
+
+      <!-- Basic Info Card -->
+      <div class="card mb-4">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">Informações Básicas</h5>
+        </div>
+        <div class="card-body">
+          <dl class="row">
+            <dt class="col-md-3">Código:</dt>
+            <dd class="col-md-9">{{ product.id }}</dd>
+
+            <dt class="col-md-3">Nome:</dt>
+            <dd class="col-md-9">{{ product.name }}</dd>
+
+            <dt class="col-md-3">Marca:</dt>
+            <dd class="col-md-9">{{ product.brand || 'Não informado' }}</dd>
+          </dl>
+        </div>
+      </div>
+
+      <!-- Description Card -->
+      <div class="card mb-4">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">Descrição</h5>
+        </div>
+        <div class="card-body">
+          <dl class="row">
+            <dt class="col-md-3">Descrição:</dt>
+            <dd class="col-md-9">
+              <div class="description-text">{{ product.description || 'Sem descrição' }}</div>
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <!-- Prices Card -->
+      <div class="card mb-4">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">Preços</h5>
+        </div>
+        <div class="card-body">
+          <dl class="row">
+            <dt class="col-md-3">Preço de Custo:</dt>
+            <dd class="col-md-9">
+              <span class="price-value">R$ {{ product.costPrice | number: '1.2-2' : 'pt-BR' }}</span>
+            </dd>
+
+            <dt class="col-md-3">Preço de Venda:</dt>
+            <dd class="col-md-9">
+              <span class="price-value">R$ {{ product.sellPrice | number: '1.2-2' : 'pt-BR' }}</span>
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <!-- Service Orders Card -->
+      <div class="card mb-4">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">Ordens de Serviço</h5>
+        </div>
+        <div class="card-body">
+          <p class="mb-3">
+            <small class="text-muted">
+              A associação de produtos a ordens de serviço é gerenciada através da própria ordem de serviço.
+            </small>
+          </p>
+
+          <div *ngIf="product.serviceOrders && product.serviceOrders.length > 0">
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Código</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let serviceOrder of product.serviceOrders">
+                    <td>{{ serviceOrder.id }}</td>
+                    <td>
+                      <div class="btn-group">
+                        <a [routerLink]="['/service-order', serviceOrder.id, 'view']" class="btn btn-info btn-sm">
+                          <fa-icon icon="eye"></fa-icon>
+                          <span class="d-none d-md-inline">Visualizar</span>
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div *ngIf="!product.serviceOrders || product.serviceOrders.length === 0">
+            <p>Este produto não está associado a nenhuma ordem de serviço.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Audit Info Card -->
+      <div class="card mb-4">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">Informações de Auditoria</h5>
+        </div>
+        <div class="card-body">
+          <dl class="row">
+            <dt class="col-md-3">Criado por:</dt>
+            <dd class="col-md-9">{{ product.createdBy || 'Sistema' }}</dd>
+
+            <dt class="col-md-3">Data de Criação:</dt>
+            <dd class="col-md-9">{{ formatDate(product.createdDate) }}</dd>
+
+            <dt class="col-md-3">Última Modificação:</dt>
+            <dd class="col-md-9">{{ product.lastModifiedBy || 'N/A' }}</dd>
+
+            <dt class="col-md-3">Data da Modificação:</dt>
+            <dd class="col-md-9">
+              {{ product.lastModifiedDate ? formatDate(product.lastModifiedDate) : 'N/A' }}
+            </dd>
+          </dl>
+        </div>
+      </div>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+      </button>
+
+      <button type="button" [routerLink]="['/product', product.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,307 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-client-heading" data-cy="ClientCreateUpdateHeading">
+        @if (editForm.controls.id.value !== null) {
+          <span>Editar Cliente</span>
+        } @else {
+          <span>Criar Novo Cliente</span>
+        }
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">Código</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <!-- Seção de Informações Gerais -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h4>Informações Gerais</h4>
+          </div>
+          <div class="card-body">
+            @let nameRef = editForm.get('name')!;
+            <div class="mb-3">
+              <label class="form-label required" for="field_name">Nome</label>
+              <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+              @if (nameRef.invalid && (nameRef.dirty || nameRef.touched)) {
+                <div>
+                  @if (editForm.get('name')?.errors?.required) {
+                    <small class="form-text text-danger">O campo é obrigatório.</small>
+                  }
+                  @if (editForm.get('name')?.errors?.minlength) {
+                    <small class="form-text text-danger">Este campo deve ter pelo menos 3 caracteres.</small>
+                  }
+                  @if (editForm.get('name')?.errors?.maxlength) {
+                    <small class="form-text text-danger">Este campo não pode ter mais de 100 caracteres.</small>
+                  }
+                </div>
+              }
+            </div>
+
+            @let clientTypeRef = editForm.get('clientType')!;
+            <div class="mb-3">
+              <label class="form-label required" for="field_clientType">Tipo de Cliente</label>
+              <select class="form-control" name="clientType" formControlName="clientType" id="field_clientType" data-cy="clientType">
+                <option [ngValue]="null"></option>
+                @for (clientType of clientTypeValues; track $index) {
+                  <option [value]="clientType">
+                    {{ { null: '', INDIVIDUAL: 'Pessoa Física', COMPANY: 'Pessoa Jurídica' }[clientType] }}
+                  </option>
+                }
+              </select>
+              @if (clientTypeRef.invalid && (clientTypeRef.dirty || clientTypeRef.touched)) {
+                <div>
+                  @if (editForm.get('clientType')?.errors?.required) {
+                    <small class="form-text text-danger">O campo é obrigatório.</small>
+                  }
+                </div>
+              }
+            </div>
+
+            @let documentNumberRef = editForm.get('documentNumber')!;
+            <div class="mb-3">
+              <label class="form-label required" for="field_documentNumber" ngbTooltip="CPF (11 digitos) ou CNPJ (14 digitos)"
+                >Documento</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name="documentNumber"
+                id="field_documentNumber"
+                data-cy="documentNumber"
+                formControlName="documentNumber"
+                placeholder="Somente números"
+              />
+              @if (documentNumberRef.invalid && (documentNumberRef.dirty || documentNumberRef.touched)) {
+                <div>
+                  @if (editForm.get('documentNumber')?.errors?.required) {
+                    <small class="form-text text-danger">O campo é obrigatório.</small>
+                  }
+                  @if (editForm.get('documentNumber')?.errors?.pattern) {
+                    <small class="form-text text-danger"
+                      >Este campo deve conter apenas números (11 dígitos para CPF ou 14 para CNPJ).</small
+                    >
+                  }
+                </div>
+              }
+            </div>
+
+            @let emailRef = editForm.get('email')!;
+            <div class="mb-3">
+              <label class="form-label required" for="field_email">Email</label>
+              <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+              @if (emailRef.invalid && (emailRef.dirty || emailRef.touched)) {
+                <div>
+                  @if (editForm.get('email')?.errors?.required) {
+                    <small class="form-text text-danger">O campo é obrigatório.</small>
+                  }
+                  @if (editForm.get('email')?.errors?.pattern) {
+                    <small class="form-text text-danger">Este campo deve ser um email válido.</small>
+                  }
+                </div>
+              }
+            </div>
+
+            @let phoneNumberRef = editForm.get('phoneNumber')!;
+            <div class="mb-3">
+              <label class="form-label required" for="field_phoneNumber">Telefone</label>
+              <input
+                type="text"
+                class="form-control"
+                name="phoneNumber"
+                id="field_phoneNumber"
+                data-cy="phoneNumber"
+                formControlName="phoneNumber"
+                placeholder="Somente números"
+              />
+              @if (phoneNumberRef.invalid && (phoneNumberRef.dirty || phoneNumberRef.touched)) {
+                <div>
+                  @if (editForm.get('phoneNumber')?.errors?.required) {
+                    <small class="form-text text-danger">O campo é obrigatório.</small>
+                  }
+                  @if (editForm.get('phoneNumber')?.errors?.pattern) {
+                    <small class="form-text text-danger">Este campo deve conter apenas números (10 ou 11 dígitos).</small>
+                  }
+                </div>
+              }
+            </div>
+
+            @let alternativePhoneNumberRef = editForm.get('alternativePhoneNumber')!;
+            <div class="mb-3">
+              <label class="form-label" for="field_alternativePhoneNumber">Telefone Alternativo</label>
+              <input
+                type="text"
+                class="form-control"
+                name="alternativePhoneNumber"
+                id="field_alternativePhoneNumber"
+                data-cy="alternativePhoneNumber"
+                formControlName="alternativePhoneNumber"
+                placeholder="Somente números (opcional)"
+              />
+              @if (alternativePhoneNumberRef.invalid && (alternativePhoneNumberRef.dirty || alternativePhoneNumberRef.touched)) {
+                <div>
+                  @if (editForm.get('alternativePhoneNumber')?.errors?.pattern) {
+                    <small class="form-text text-danger">Este campo deve conter apenas números (10 ou 11 dígitos).</small>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção de Endereço -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h4>Informações de Endereço</h4>
+          </div>
+          <div class="card-body">
+            @let addressRef = editForm.get('address')!;
+            <div class="mb-3">
+              <label class="form-label required" for="field_address">Endereço</label>
+              <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />
+              @if (addressRef.invalid && (addressRef.dirty || addressRef.touched)) {
+                <div>
+                  @if (editForm.get('address')?.errors?.required) {
+                    <small class="form-text text-danger">O campo é obrigatório.</small>
+                  }
+                </div>
+              }
+            </div>
+
+            @let cityRef = editForm.get('city')!;
+            <div class="mb-3">
+              <label class="form-label required" for="field_city">Cidade</label>
+              <input type="text" class="form-control" name="city" id="field_city" data-cy="city" formControlName="city" />
+              @if (cityRef.invalid && (cityRef.dirty || cityRef.touched)) {
+                <div>
+                  @if (editForm.get('city')?.errors?.required) {
+                    <small class="form-text text-danger">O campo é obrigatório.</small>
+                  }
+                </div>
+              }
+            </div>
+
+            @let stateRef = editForm.get('state')!;
+            <div class="mb-3">
+              <label class="form-label required" for="field_state">Estado</label>
+              <input type="text" class="form-control" name="state" id="field_state" data-cy="state" formControlName="state" />
+              @if (stateRef.invalid && (stateRef.dirty || stateRef.touched)) {
+                <div>
+                  @if (editForm.get('state')?.errors?.required) {
+                    <small class="form-text text-danger">O campo é obrigatório.</small>
+                  }
+                </div>
+              }
+            </div>
+
+            @let zipCodeRef = editForm.get('zipCode')!;
+            <div class="mb-3">
+              <label class="form-label required" for="field_zipCode">CEP</label>
+              <input
+                type="text"
+                class="form-control"
+                name="zipCode"
+                id="field_zipCode"
+                data-cy="zipCode"
+                formControlName="zipCode"
+                placeholder="Somente números"
+              />
+              @if (zipCodeRef.invalid && (zipCodeRef.dirty || zipCodeRef.touched)) {
+                <div>
+                  @if (editForm.get('zipCode')?.errors?.required) {
+                    <small class="form-text text-danger">O campo é obrigatório.</small>
+                  }
+                  @if (editForm.get('zipCode')?.errors?.pattern) {
+                    <small class="form-text text-danger">Este campo deve conter 8 dígitos numéricos.</small>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção de Observações -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h4>Observações</h4>
+          </div>
+          <div class="card-body">
+            @let notesRef = editForm.get('notes')!;
+            <div class="mb-3">
+              <label class="form-label" for="field_notes">Observações</label>
+              <textarea
+                class="form-control"
+                name="notes"
+                id="field_notes"
+                data-cy="notes"
+                formControlName="notes"
+                rows="4"
+                placeholder="Informações adicionais sobre o cliente (opcional)"
+              ></textarea>
+              @if (notesRef.invalid && (notesRef.dirty || notesRef.touched)) {
+                <div>
+                  @if (editForm.get('notes')?.errors?.maxlength) {
+                    <small class="form-text text-danger">Este campo não pode ter mais de 1000 caracteres.</small>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Campos de auditoria ocultos -->
+        <div class="d-none">
+          <input type="text" class="form-control" name="createdBy" id="field_createdBy" data-cy="createdBy" formControlName="createdBy" />
+          <input
+            id="field_createdDate"
+            data-cy="createdDate"
+            type="datetime-local"
+            class="form-control"
+            name="createdDate"
+            formControlName="createdDate"
+            placeholder="YYYY-MM-DD HH:mm"
+          />
+          <input
+            type="text"
+            class="form-control"
+            name="lastModifiedBy"
+            id="field_lastModifiedBy"
+            data-cy="lastModifiedBy"
+            formControlName="lastModifiedBy"
+          />
+          <input
+            id="field_lastModifiedDate"
+            data-cy="lastModifiedDate"
+            type="datetime-local"
+            class="form-control"
+            name="lastModifiedDate"
+            formControlName="lastModifiedDate"
+            placeholder="YYYY-MM-DD HH:mm"
+          />
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end mt-4">
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary me-2" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salvar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

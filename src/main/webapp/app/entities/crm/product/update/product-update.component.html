@@ -1,0 +1,206 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-product-heading" data-cy="ProductCreateUpdateHeading">
+        @if (editForm.controls.id.value !== null) {
+          <span>Editar Produto #{{ editForm.controls.id.value }}</span>
+        } @else {
+          <span>Criar Novo Produto</span>
+        }
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <!-- Basic Information Section -->
+        <div class="card mb-4">
+          <div class="card-header bg-light">
+            <h5 class="mb-0">Informações Básicas</h5>
+          </div>
+          <div class="card-body">
+            @if (editForm.controls.id.value !== null) {
+              <div class="mb-3">
+                <label class="form-label" for="field_id">Código</label>
+                <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+              </div>
+            }
+
+            @let nameRef = editForm.get('name')!;
+            <div class="mb-3">
+              <label class="form-label" for="field_name">Nome</label>
+              <input type="text" class="form-control" name="name" id="field_name" data-cy="name" formControlName="name" />
+              @if (nameRef.invalid && (nameRef.dirty || nameRef.touched)) {
+                <div>
+                  @if (editForm.get('name')?.errors?.required) {
+                    <small class="form-text text-danger">O campo é obrigatório.</small>
+                  }
+                  @if (editForm.get('name')?.errors?.minlength) {
+                    <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+                  }
+                  @if (editForm.get('name')?.errors?.maxlength) {
+                    <small class="form-text text-danger">Este campo não pode ter mais de 100 caracteres.</small>
+                  }
+                </div>
+              }
+            </div>
+
+            @let brandRef = editForm.get('brand')!;
+            <div class="mb-3">
+              <label class="form-label" for="field_brand">Marca</label>
+              <input type="text" class="form-control" name="brand" id="field_brand" data-cy="brand" formControlName="brand" />
+              @if (brandRef.invalid && (brandRef.dirty || brandRef.touched)) {
+                <div>
+                  @if (editForm.get('brand')?.errors?.maxlength) {
+                    <small class="form-text text-danger">Este campo não pode ter mais de 50 caracteres.</small>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Description Section -->
+        <div class="card mb-4">
+          <div class="card-header bg-light">
+            <h5 class="mb-0">Descrição</h5>
+          </div>
+          <div class="card-body">
+            @let descriptionRef = editForm.get('description')!;
+            <div class="mb-3">
+              <label class="form-label" for="field_description">Descrição</label>
+              <textarea
+                class="form-control"
+                name="description"
+                id="field_description"
+                data-cy="description"
+                formControlName="description"
+                rows="4"
+              ></textarea>
+              @if (descriptionRef.invalid && (descriptionRef.dirty || descriptionRef.touched)) {
+                <div>
+                  @if (editForm.get('description')?.errors?.maxlength) {
+                    <small class="form-text text-danger">Este campo não pode ter mais de 1000 caracteres.</small>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Pricing Section -->
+        <div class="card mb-4">
+          <div class="card-header bg-light">
+            <h5 class="mb-0">Preços</h5>
+          </div>
+          <div class="card-body">
+            @let costPriceRef = editForm.get('costPrice')!;
+            <div class="mb-3">
+              <label class="form-label" for="field_costPrice">Preço de Custo (R$)</label>
+              <input
+                type="number"
+                class="form-control"
+                name="costPrice"
+                id="field_costPrice"
+                data-cy="costPrice"
+                formControlName="costPrice"
+              />
+              @if (costPriceRef.invalid && (costPriceRef.dirty || costPriceRef.touched)) {
+                <div>
+                  @if (editForm.get('costPrice')?.errors?.min) {
+                    <small class="form-text text-danger">Este campo deve ser maior que 0.</small>
+                  }
+                  <small class="form-text text-danger" [hidden]="!editForm.get('costPrice')?.errors?.number"
+                    >Este campo é do tipo numérico.</small
+                  >
+                </div>
+              }
+            </div>
+
+            @let sellPriceRef = editForm.get('sellPrice')!;
+            <div class="mb-3">
+              <label class="form-label" for="field_sellPrice">Preço de Venda (R$)</label>
+              <input
+                type="number"
+                class="form-control"
+                name="sellPrice"
+                id="field_sellPrice"
+                data-cy="sellPrice"
+                formControlName="sellPrice"
+              />
+              @if (sellPriceRef.invalid && (sellPriceRef.dirty || sellPriceRef.touched)) {
+                <div>
+                  @if (editForm.get('sellPrice')?.errors?.required) {
+                    <small class="form-text text-danger">O campo é obrigatório.</small>
+                  }
+                  @if (editForm.get('sellPrice')?.errors?.min) {
+                    <small class="form-text text-danger">Este campo deve ser maior que 0.</small>
+                  }
+                  <small class="form-text text-danger" [hidden]="!editForm.get('sellPrice')?.errors?.number"
+                    >Este campo é do tipo numérico.</small
+                  >
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Hidden audit fields -->
+        <div class="d-none">
+          <input type="text" class="form-control" name="createdBy" id="field_createdBy" data-cy="createdBy" formControlName="createdBy" />
+          <input
+            id="field_createdDate"
+            data-cy="createdDate"
+            type="datetime-local"
+            class="form-control"
+            name="createdDate"
+            formControlName="createdDate"
+            placeholder="YYYY-MM-DD HH:mm"
+          />
+          <input
+            type="text"
+            class="form-control"
+            name="lastModifiedBy"
+            id="field_lastModifiedBy"
+            data-cy="lastModifiedBy"
+            formControlName="lastModifiedBy"
+          />
+          <input
+            id="field_lastModifiedDate"
+            data-cy="lastModifiedDate"
+            type="datetime-local"
+            class="form-control"
+            name="lastModifiedDate"
+            formControlName="lastModifiedDate"
+            placeholder="YYYY-MM-DD HH:mm"
+          />
+          <!-- Campo oculto para serviceOrders -->
+          <select
+            class="form-control d-none"
+            id="field_serviceOrders"
+            data-cy="serviceOrders"
+            multiple
+            name="serviceOrders"
+            formControlName="serviceOrders"
+            [compareWith]="compareServiceOrder"
+          ></select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salvar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,312 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (client(); as clientRef) {
+      <div>
+        <h2 data-cy="clientDetailsHeading"><span>Detalhes do Cliente</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <!-- Tabs de navegação -->
+        <ul class="nav nav-tabs mb-3">
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="activeTab === 'details'" (click)="setActiveTab('details')" href="javascript:void(0)">
+              Detalhes
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="activeTab === 'vehicles'" (click)="setActiveTab('vehicles')" href="javascript:void(0)">
+              Veículos ({{ vehicles.length }})
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="activeTab === 'workOrders'" (click)="setActiveTab('workOrders')" href="javascript:void(0)">
+              Ordens de Serviço ({{ serviceOrders.length }})
+            </a>
+          </li>
+        </ul>
+
+        <!-- Conteúdo da tab Detalhes -->
+        @if (activeTab === 'details') {
+          <!-- Seção de Informações Gerais -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h4>Informações Gerais</h4>
+            </div>
+            <div class="card-body">
+              <dl class="row">
+                <dt class="col-md-3">Código</dt>
+                <dd class="col-md-9">{{ clientRef.id }}</dd>
+
+                <dt class="col-md-3">Nome</dt>
+                <dd class="col-md-9">{{ clientRef.name || 'Não informado' }}</dd>
+
+                <dt class="col-md-3">Tipo de Cliente</dt>
+                <dd class="col-md-9">
+                  @if (clientRef.clientType) {
+                    <span
+                      class="badge"
+                      [ngClass]="{ 'bg-primary': clientRef.clientType === 'INDIVIDUAL', 'bg-success': clientRef.clientType === 'COMPANY' }"
+                    >
+                      {{ { null: '', INDIVIDUAL: 'Pessoa Física', COMPANY: 'Pessoa Jurídica' }[clientRef.clientType ?? 'null'] }}
+                    </span>
+                  } @else {
+                    <span class="text-muted">Não informado</span>
+                  }
+                </dd>
+
+                <dt class="col-md-3">Email</dt>
+                <dd class="col-md-9">
+                  @if (clientRef.email) {
+                    <a href="mailto:{{ clientRef.email }}" class="email-link">
+                      {{ clientRef.email }}
+                    </a>
+                  } @else {
+                    <span class="text-muted">Não informado</span>
+                  }
+                </dd>
+
+                <dt class="col-md-3" ngbTooltip="CPF (11 digitos) ou CNPJ (14 digitos)">Documento</dt>
+                <dd class="col-md-9">{{ formatDocument(clientRef.documentNumber) }}</dd>
+
+                <dt class="col-md-3">Telefone</dt>
+                <dd class="col-md-9">
+                  @if (clientRef.phoneNumber) {
+                    <a [href]="getPhoneLink(clientRef.phoneNumber)" class="phone-link">
+                      {{ formatPhoneNumber(clientRef.phoneNumber) }}
+                    </a>
+                  } @else {
+                    <span class="text-muted">Não informado</span>
+                  }
+                </dd>
+
+                <dt class="col-md-3">Telefone Alternativo</dt>
+                <dd class="col-md-9">
+                  @if (clientRef.alternativePhoneNumber) {
+                    <a [href]="getPhoneLink(clientRef.alternativePhoneNumber)" class="phone-link">
+                      {{ formatPhoneNumber(clientRef.alternativePhoneNumber) }}
+                    </a>
+                  } @else {
+                    <span class="text-muted">Não informado</span>
+                  }
+                </dd>
+              </dl>
+            </div>
+          </div>
+
+          <!-- Seção de Endereço -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h4>Informações de Endereço</h4>
+            </div>
+            <div class="card-body">
+              <dl class="row">
+                <dt class="col-md-3">Endereço</dt>
+                <dd class="col-md-9">{{ clientRef.address || 'Não informado' }}</dd>
+
+                <dt class="col-md-3">Cidade</dt>
+                <dd class="col-md-9">{{ clientRef.city || 'Não informado' }}</dd>
+
+                <dt class="col-md-3">Estado</dt>
+                <dd class="col-md-9">{{ clientRef.state || 'Não informado' }}</dd>
+
+                <dt class="col-md-3">CEP</dt>
+                <dd class="col-md-9">{{ formatCep(clientRef.zipCode) }}</dd>
+              </dl>
+            </div>
+          </div>
+
+          <!-- Seção de Observações -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h4>Observações</h4>
+            </div>
+            <div class="card-body">
+              <p [ngClass]="{ 'text-muted': !clientRef.notes }">{{ clientRef.notes || 'Nenhuma observação registrada.' }}</p>
+            </div>
+          </div>
+
+          <!-- Seção de Dados de Auditoria -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h4>Dados de Auditoria</h4>
+            </div>
+            <div class="card-body">
+              <dl class="row">
+                <dt class="col-md-3">Criado por</dt>
+                <dd class="col-md-9">{{ clientRef.createdBy || 'Não informado' }}</dd>
+
+                <dt class="col-md-3">Data de criação</dt>
+                <dd class="col-md-9">
+                  @if (clientRef.createdDate) {
+                    {{ clientRef.createdDate | formatMediumDatetime }}
+                  } @else {
+                    <span class="text-muted">Não informado</span>
+                  }
+                </dd>
+
+                <dt class="col-md-3">Atualizado por</dt>
+                <dd class="col-md-9">{{ clientRef.lastModifiedBy || 'Não informado' }}</dd>
+
+                <dt class="col-md-3">Data de atualização</dt>
+                <dd class="col-md-9">
+                  @if (clientRef.lastModifiedDate) {
+                    {{ clientRef.lastModifiedDate | formatMediumDatetime }}
+                  } @else {
+                    <span class="text-muted">Não informado</span>
+                  }
+                </dd>
+              </dl>
+            </div>
+          </div>
+        }
+
+        <!-- Conteúdo da tab Veículos -->
+        @if (activeTab === 'vehicles') {
+          <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h4 class="mb-0">Veículos do Cliente</h4>
+              <a [routerLink]="['/vehicle/new']" [queryParams]="{ clientId: clientRef.id }" class="btn btn-primary btn-sm">
+                <span>Novo Veículo</span>
+              </a>
+            </div>
+            <div class="card-body">
+              @if (isLoadingVehicles) {
+                <div class="d-flex justify-content-center">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Carregando...</span>
+                  </div>
+                </div>
+              } @else if (vehicles.length === 0) {
+                <div class="alert alert-warning">
+                  <span>Nenhum veículo encontrado para este cliente.</span>
+                </div>
+              } @else {
+                <div class="table-responsive">
+                  <table class="table table-striped table-hover">
+                    <thead>
+                      <tr>
+                        <th>Placa</th>
+                        <th>Modelo</th>
+                        <th>Marca</th>
+                        <th>Cor</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (vehicle of vehicles; track vehicle.id) {
+                        <tr>
+                          <td>{{ vehicle.licensePlate }}</td>
+                          <td>{{ vehicle.model }}</td>
+                          <td>{{ vehicle.brand }}</td>
+                          <td>{{ vehicle.color }}</td>
+                          <td>
+                            <span class="badge" [ngClass]="getVehicleStatusClass(vehicle.status)">
+                              {{ getVehicleStatusLabel(vehicle.status) }}
+                            </span>
+                          </td>
+                          <td class="text-end">
+                            <div class="btn-group">
+                              <a [routerLink]="['/vehicle', vehicle.id, 'view']" class="btn btn-info btn-sm">
+                                <span>Ver</span>
+                              </a>
+                              <a [routerLink]="['/vehicle', vehicle.id, 'edit']" class="btn btn-primary btn-sm">
+                                <span>Editar</span>
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Conteúdo da tab Ordens de Serviço -->
+        @if (activeTab === 'workOrders') {
+          <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h4 class="mb-0">Ordens de Serviço</h4>
+              <a [routerLink]="['/service-order/new']" class="btn btn-primary btn-sm">
+                <span>Nova Ordem de Serviço</span>
+              </a>
+            </div>
+            <div class="card-body">
+              @if (isLoadingServiceOrders) {
+                <div class="d-flex justify-content-center">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Carregando...</span>
+                  </div>
+                </div>
+              } @else if (serviceOrders.length === 0) {
+                <div class="alert alert-warning">
+                  <span>Nenhuma ordem de serviço encontrada para os veículos deste cliente.</span>
+                </div>
+              } @else {
+                <div class="table-responsive">
+                  <table class="table table-striped table-hover">
+                    <thead>
+                      <tr>
+                        <th>Código</th>
+                        <th>Veículo</th>
+                        <th>Tipo de Serviço</th>
+                        <th>Data de Criação</th>
+                        <th>Valor Total</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (order of serviceOrders; track order.id) {
+                        <tr>
+                          <td>{{ order.id }}</td>
+                          <td>{{ order.vehicle?.licensePlate }}</td>
+                          <td>{{ order.type?.name }}</td>
+                          <td>{{ order.creationDate | formatMediumDatetime }}</td>
+                          <td>{{ order.totalCost | currency: 'BRL' }}</td>
+                          <td>
+                            <span class="badge" [ngClass]="getServiceOrderStatusClass(order.status)">
+                              {{ getServiceOrderStatusLabel(order.status) }}
+                            </span>
+                          </td>
+                          <td class="text-end">
+                            <div class="btn-group">
+                              <a [routerLink]="['/service-order', order.id, 'view']" class="btn btn-info btn-sm">
+                                <span>Ver</span>
+                              </a>
+                              <a [routerLink]="['/service-order', order.id, 'edit']" class="btn btn-primary btn-sm">
+                                <span>Editar</span>
+                              </a>
+                              <a [routerLink]="['/service-order', order.id, 'delete']" class="btn btn-danger btn-sm">
+                                <span>Excluir</span>
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <button type="submit" (click)="previousState()" class="btn btn-info me-2" data-cy="entityDetailsBackButton">
+          <span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/client', clientRef.id, 'edit']" class="btn btn-primary">
+          <span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

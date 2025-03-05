@@ -1,0 +1,90 @@
+/* Estilos para o link de veículo */
+.vehicle-link {
+  color: #3498db;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.vehicle-link:hover {
+  color: #2980b9;
+  text-decoration: underline;
+}
+
+/* Estilos para o status da ordem de serviço */
+.service-status {
+  display: inline-block;
+  padding: 6px 10px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.service-status.created {
+  background-color: #3498db;
+  color: white;
+}
+
+.service-status.in-progress {
+  background-color: #f39c12;
+  color: white;
+}
+
+.service-status.completed {
+  background-color: #00bc8c;
+  color: white;
+}
+
+.service-status.canceled {
+  background-color: #e74c3c;
+  color: white;
+}
+
+/* Estilos para dados vazios */
+.text-muted {
+  color: #adb5bd;
+  font-style: italic;
+}
+
+/* Estilos para o texto de observações */
+.notes-text {
+  display: block;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table tbody td {
+  padding: 0.75rem;
+  vertical-align: middle;
+}
+
+/* Adicionar borda arredondada ao container da tabela */
+.table-entities.card {
+  border-radius: 0.5rem;
+  overflow: hidden;
+  border: none;
+  background-color: #303030;
+}
+
+/* Estilos para botões na tabela */
+.btn-group {
+  .btn {
+    margin-left: 4px;
+  }
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .d-none.d-md-inline {
+    display: none !important;
+  }
+
+  .btn-group .btn {
+    padding: 0.25rem 0.5rem;
+  }
+}

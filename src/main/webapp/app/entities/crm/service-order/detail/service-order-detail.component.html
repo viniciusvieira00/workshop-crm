@@ -1,0 +1,229 @@
+<div class="d-flex justify-content-center">
+  <div class="col-md-10 col-lg-8">
+    @if (serviceOrder(); as serviceOrderRef) {
+      <div class="service-order-detail">
+        <div class="detail-header">
+          <h2 data-cy="serviceOrderDetailsHeading" class="mb-0">
+            <span>Ordem de Serviço #{{ serviceOrderRef.id }}</span>
+          </h2>
+          <p class="text-muted mb-0">Criada em {{ serviceOrderRef.creationDate | formatMediumDatetime }}</p>
+        </div>
+
+        <jhi-alert-error></jhi-alert-error>
+        <jhi-alert></jhi-alert>
+
+        <div class="detail-section">
+          <h3 class="section-title">Informações Gerais</h3>
+
+          <div class="detail-row">
+            <div class="detail-label">Status</div>
+            <div class="detail-value">
+              @if (serviceOrderRef.status) {
+                <span
+                  class="service-status"
+                  [ngClass]="{
+                    created: serviceOrderRef.status === 'CREATED',
+                    'in-progress': serviceOrderRef.status === 'IN_PROGRESS',
+                    completed: serviceOrderRef.status === 'COMPLETED',
+                    canceled: serviceOrderRef.status === 'CANCELED',
+                  }"
+                >
+                  {{ getStatusLabel(serviceOrderRef.status) }}
+                </span>
+              } @else {
+                <span class="text-muted">Não informado</span>
+              }
+            </div>
+          </div>
+
+          <div class="detail-row">
+            <div class="detail-label">Tipo de Serviço</div>
+            <div class="detail-value">
+              @if (serviceOrderRef.type?.name) {
+                <a [routerLink]="['/service-order-type', serviceOrderRef.type?.id, 'view']">
+                  {{ serviceOrderRef.type?.name }}
+                </a>
+              } @else {
+                <span class="text-muted">Não informado</span>
+              }
+            </div>
+          </div>
+
+          <div class="detail-row">
+            <div class="detail-label">Cliente</div>
+            <div class="detail-value">
+              <span>{{ getClientName(serviceOrderRef.vehicle?.id) }}</span>
+            </div>
+          </div>
+
+          <div class="detail-row">
+            <div class="detail-label">Veículo</div>
+            <div class="detail-value">
+              @if (serviceOrderRef.vehicle?.licensePlate) {
+                <a [routerLink]="['/vehicle', serviceOrderRef.vehicle?.id, 'view']" class="vehicle-link">
+                  {{ serviceOrderRef.vehicle?.licensePlate }}
+                </a>
+              } @else {
+                <span class="text-muted">Não informado</span>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3 class="section-title">Datas</h3>
+
+          <div class="detail-row">
+            <div class="detail-label">Data de Criação</div>
+            <div class="detail-value">
+              @if (serviceOrderRef.creationDate) {
+                {{ serviceOrderRef.creationDate | formatMediumDatetime }}
+              } @else {
+                <span class="text-muted">Não informado</span>
+              }
+            </div>
+          </div>
+
+          <div class="detail-row">
+            <div class="detail-label">Data de Início</div>
+            <div class="detail-value">
+              @if (serviceOrderRef.startDate) {
+                {{ serviceOrderRef.startDate | formatMediumDatetime }}
+              } @else {
+                <span class="text-muted">Não informado</span>
+              }
+            </div>
+          </div>
+
+          <div class="detail-row">
+            <div class="detail-label">Data de Conclusão</div>
+            <div class="detail-value">
+              @if (serviceOrderRef.completionDate) {
+                {{ serviceOrderRef.completionDate | formatMediumDatetime }}
+              } @else {
+                <span class="text-muted">Não informado</span>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3 class="section-title">Custos</h3>
+
+          <div class="detail-row">
+            <div class="detail-label">Custo Inicial</div>
+            <div class="detail-value">
+              {{ formatCurrency(serviceOrderRef.initialCost) }}
+            </div>
+          </div>
+
+          <div class="detail-row">
+            <div class="detail-label">Custos Adicionais</div>
+            <div class="detail-value">
+              {{ formatCurrency(serviceOrderRef.additionalCost) }}
+            </div>
+          </div>
+
+          <div class="detail-row">
+            <div class="detail-label">Custo Total</div>
+            <div class="detail-value fw-bold">
+              {{ formatCurrency(serviceOrderRef.totalCost) }}
+            </div>
+          </div>
+        </div>
+
+        <div class="detail-section">
+          <h3 class="section-title">Produtos Utilizados</h3>
+
+          @if (serviceOrderRef.products && serviceOrderRef.products.length > 0) {
+            <div class="table-responsive">
+              <table class="table table-sm table-striped">
+                <thead>
+                  <tr>
+                    <th>Nome</th>
+                    <th>Marca</th>
+                    <th class="text-end">Preço de Venda</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (product of serviceOrderRef.products; track $index) {
+                    <tr>
+                      <td>
+                        <a [routerLink]="['/product', product.id, 'view']">{{ product.name }}</a>
+                      </td>
+                      <td>{{ product.brand || 'N/A' }}</td>
+                      <td class="text-end">{{ formatCurrency(product.sellPrice) }}</td>
+                    </tr>
+                  }
+                  <tr class="table-active">
+                    <td colspan="2" class="text-end fw-bold">Total dos Produtos:</td>
+                    <td class="text-end fw-bold">{{ calculateProductsTotal(serviceOrderRef.products) }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          } @else {
+            <p class="text-muted">Nenhum produto associado a esta ordem de serviço</p>
+          }
+        </div>
+
+        @if (serviceOrderRef.notes) {
+          <div class="detail-section">
+            <h3 class="section-title">Observações</h3>
+            <p>{{ serviceOrderRef.notes }}</p>
+          </div>
+        }
+
+        <div class="detail-section">
+          <h3 class="section-title">Informações de Auditoria</h3>
+
+          <div class="detail-row">
+            <div class="detail-label">Criado por</div>
+            <div class="detail-value">
+              {{ serviceOrderRef.createdBy || 'Sistema' }}
+            </div>
+          </div>
+
+          <div class="detail-row">
+            <div class="detail-label">Data de Criação</div>
+            <div class="detail-value">
+              @if (serviceOrderRef.createdDate) {
+                {{ serviceOrderRef.createdDate | formatMediumDatetime }}
+              } @else {
+                <span class="text-muted">Não informado</span>
+              }
+            </div>
+          </div>
+
+          <div class="detail-row">
+            <div class="detail-label">Última Modificação por</div>
+            <div class="detail-value">
+              {{ serviceOrderRef.lastModifiedBy || 'N/A' }}
+            </div>
+          </div>
+
+          <div class="detail-row">
+            <div class="detail-label">Data da Última Modificação</div>
+            <div class="detail-value">
+              @if (serviceOrderRef.lastModifiedDate) {
+                {{ serviceOrderRef.lastModifiedDate | formatMediumDatetime }}
+              } @else {
+                <span class="text-muted">Não informado</span>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="action-buttons">
+          <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+            <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Voltar</span>
+          </button>
+
+          <button type="button" [routerLink]="['/service-order', serviceOrderRef.id, 'edit']" class="btn btn-primary">
+            <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Editar</span>
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

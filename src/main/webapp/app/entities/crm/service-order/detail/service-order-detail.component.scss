@@ -1,0 +1,99 @@
+.service-order-detail {
+  background-color: #303030;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.detail-header {
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #444;
+  padding-bottom: 1rem;
+}
+
+.detail-section {
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  color: #fff;
+  border-bottom: 1px solid #444;
+  padding-bottom: 0.5rem;
+}
+
+.detail-row {
+  display: flex;
+  margin-bottom: 0.75rem;
+}
+
+.detail-label {
+  flex: 0 0 30%;
+  font-weight: 500;
+  color: #adb5bd;
+}
+
+.detail-value {
+  flex: 0 0 70%;
+  color: #fff;
+}
+
+.text-muted {
+  color: #adb5bd;
+  font-style: italic;
+}
+
+/* Estilos para o status da ordem de serviço */
+.service-status {
+  display: inline-block;
+  padding: 6px 10px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.service-status.created {
+  background-color: #3498db;
+  color: white;
+}
+
+.service-status.in-progress {
+  background-color: #f39c12;
+  color: white;
+}
+
+.service-status.completed {
+  background-color: #00bc8c;
+  color: white;
+}
+
+.service-status.canceled {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.action-buttons {
+  margin-top: 2rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .detail-row {
+    flex-direction: column;
+  }
+
+  .detail-label,
+  .detail-value {
+    flex: 0 0 100%;
+  }
+
+  .detail-label {
+    margin-bottom: 0.25rem;
+  }
+}

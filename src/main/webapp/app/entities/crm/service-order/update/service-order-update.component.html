@@ -1,0 +1,331 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-service-order-heading" data-cy="ServiceOrderCreateUpdateHeading">
+        @if (editForm.controls.id.value !== null) {
+          <span>Editar Ordem de Serviço #{{ editForm.controls.id.value }}</span>
+        } @else {
+          <span>Criar Nova Ordem de Serviço</span>
+        }
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <!-- Basic Information Section -->
+        <div class="card mb-4">
+          <div class="card-header bg-light">
+            <h5 class="mb-0">Informações Básicas</h5>
+          </div>
+          <div class="card-body">
+            @if (editForm.controls.id.value !== null) {
+              <div class="mb-3">
+                <label class="form-label" for="field_id">Código</label>
+                <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+              </div>
+            }
+
+            @let creationDateRef = editForm.get('creationDate')!;
+            <div class="mb-3 d-none">
+              <label class="form-label" for="field_creationDate" ngbTooltip="Data de criação da ordem de serviço">Data de Criação</label>
+              <div class="d-flex">
+                <input
+                  id="field_creationDate"
+                  data-cy="creationDate"
+                  type="datetime-local"
+                  class="form-control"
+                  name="creationDate"
+                  formControlName="creationDate"
+                  placeholder="YYYY-MM-DD HH:mm"
+                />
+              </div>
+            </div>
+
+            @let statusRef = editForm.get('status')!;
+            <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
+              <label class="form-label" for="field_status" ngbTooltip="Status da ordem de serviço">Status</label>
+              <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
+                <option [ngValue]="null"></option>
+                @for (serviceOrderStatus of serviceOrderStatusValues; track $index) {
+                  <option [value]="serviceOrderStatus">{{ serviceOrderStatusLabels[serviceOrderStatus] || serviceOrderStatus }}</option>
+                }
+              </select>
+              @if (statusRef.invalid && (statusRef.dirty || statusRef.touched)) {
+                <div>
+                  @if (editForm.get('status')?.errors?.required) {
+                    <small class="form-text text-danger">O campo é obrigatório.</small>
+                  }
+                </div>
+              }
+            </div>
+
+            <div class="mb-3" *ngIf="editForm.controls.id.value === null">
+              <label class="form-label">Status</label>
+              <div class="form-control bg-light">
+                <span class="badge bg-info">{{ serviceOrderStatusLabels['CREATED'] }}</span>
+              </div>
+              <small class="text-muted">O status inicial será definido automaticamente como "Criado"</small>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="field_type">Tipo de Serviço</label>
+              <select
+                class="form-control"
+                id="field_type"
+                data-cy="type"
+                name="type"
+                formControlName="type"
+                [compareWith]="compareServiceOrderType"
+              >
+                @if (!editForm.get('type')!.value) {
+                  <option [ngValue]="null" selected></option>
+                }
+                @for (serviceOrderTypeOption of serviceOrderTypesSharedCollection; track $index) {
+                  <option [ngValue]="serviceOrderTypeOption">
+                    {{ serviceOrderTypeOption.name }} - {{ formatCurrency(serviceOrderTypeOption.price) }}
+                  </option>
+                }
+              </select>
+            </div>
+            @if (editForm.get(['type'])!.invalid && (editForm.get(['type'])!.dirty || editForm.get(['type'])!.touched)) {
+              <div>
+                @if (editForm.get(['type'])?.errors?.required) {
+                  <small class="form-text text-danger">O campo é obrigatório.</small>
+                }
+              </div>
+            }
+
+            <div class="mb-3">
+              <label class="form-label" for="field_vehicle">Veículo</label>
+              <select
+                class="form-control"
+                id="field_vehicle"
+                data-cy="vehicle"
+                name="vehicle"
+                formControlName="vehicle"
+                [compareWith]="compareVehicle"
+              >
+                @if (!editForm.get('vehicle')!.value) {
+                  <option [ngValue]="null" selected></option>
+                }
+                @for (vehicleOption of vehiclesSharedCollection; track $index) {
+                  <option [ngValue]="vehicleOption">{{ vehicleOption.licensePlate }} - {{ vehicleOption.model }}</option>
+                }
+              </select>
+            </div>
+            @if (editForm.get(['vehicle'])!.invalid && (editForm.get(['vehicle'])!.dirty || editForm.get(['vehicle'])!.touched)) {
+              <div>
+                @if (editForm.get(['vehicle'])?.errors?.required) {
+                  <small class="form-text text-danger">O campo é obrigatório.</small>
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Service Dates Section -->
+        <div class="card mb-4">
+          <div class="card-header bg-light">
+            <h5 class="mb-0">Datas do Serviço</h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label" for="field_startDate" ngbTooltip="Data de início do serviço">Data de Início</label>
+              <div class="d-flex">
+                <input
+                  id="field_startDate"
+                  data-cy="startDate"
+                  type="datetime-local"
+                  class="form-control"
+                  name="startDate"
+                  formControlName="startDate"
+                  placeholder="YYYY-MM-DD HH:mm"
+                />
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label" for="field_completionDate" ngbTooltip="Data de conclusão do serviço">Data de Conclusão</label>
+              <div class="d-flex">
+                <input
+                  id="field_completionDate"
+                  data-cy="completionDate"
+                  type="datetime-local"
+                  class="form-control"
+                  name="completionDate"
+                  formControlName="completionDate"
+                  placeholder="YYYY-MM-DD HH:mm"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Costs Section -->
+        <div class="card mb-4">
+          <div class="card-header bg-light">
+            <h5 class="mb-0">Custos</h5>
+          </div>
+          <div class="card-body">
+            @let initialCostRef = editForm.get('initialCost')!;
+            <div class="mb-3">
+              <label class="form-label" for="field_initialCost" ngbTooltip="Custo inicial estimado">Custo Inicial (R$)</label>
+              <input
+                type="number"
+                class="form-control"
+                name="initialCost"
+                id="field_initialCost"
+                data-cy="initialCost"
+                formControlName="initialCost"
+                (change)="calculateTotalCost()"
+              />
+              <small class="text-muted">Valor sugerido com base no tipo de serviço selecionado</small>
+              @if (initialCostRef.invalid && (initialCostRef.dirty || initialCostRef.touched)) {
+                <div>
+                  @if (editForm.get('initialCost')?.errors?.min) {
+                    <small class="form-text text-danger">Este campo deve ser maior que 0.</small>
+                  }
+                  <small class="form-text text-danger" [hidden]="!editForm.get('initialCost')?.errors?.number"
+                    >Este campo é do tipo numérico.</small
+                  >
+                </div>
+              }
+            </div>
+
+            @let additionalCostRef = editForm.get('additionalCost')!;
+            <div class="mb-3">
+              <label class="form-label" for="field_additionalCost" ngbTooltip="Custos adicionais">Custos Adicionais (R$)</label>
+              <input
+                type="number"
+                class="form-control"
+                name="additionalCost"
+                id="field_additionalCost"
+                data-cy="additionalCost"
+                formControlName="additionalCost"
+                (change)="calculateTotalCost()"
+              />
+              @if (additionalCostRef.invalid && (additionalCostRef.dirty || additionalCostRef.touched)) {
+                <div>
+                  @if (editForm.get('additionalCost')?.errors?.min) {
+                    <small class="form-text text-danger">Este campo deve ser maior que 0.</small>
+                  }
+                  <small class="form-text text-danger" [hidden]="!editForm.get('additionalCost')?.errors?.number"
+                    >Este campo é do tipo numérico.</small
+                  >
+                </div>
+              }
+            </div>
+
+            @let totalCostRef = editForm.get('totalCost')!;
+            <div class="mb-3">
+              <label class="form-label" for="field_totalCost" ngbTooltip="Custo total da ordem de serviço">Custo Total (R$)</label>
+              <input
+                type="number"
+                class="form-control"
+                name="totalCost"
+                id="field_totalCost"
+                data-cy="totalCost"
+                formControlName="totalCost"
+                [readonly]="true"
+                [ngClass]="{ 'bg-light': true }"
+              />
+              <small class="text-muted">Calculado automaticamente (Custo Inicial + Custos Adicionais + Preço de Venda dos Produtos)</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Products Section -->
+        <div class="card mb-4">
+          <div class="card-header bg-light">
+            <h5 class="mb-0">Produtos</h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label" for="field_products">Produtos Utilizados</label>
+              <ng-select
+                [items]="productsSharedCollection"
+                [multiple]="true"
+                bindLabel="name"
+                [compareWith]="compareProduct"
+                appendTo="body"
+                id="field_products"
+                data-cy="products"
+                formControlName="products"
+              >
+                <ng-template ng-option-tmp let-item="item"> {{ item.name }} - {{ formatCurrency(item.sellPrice) }} </ng-template>
+              </ng-select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes Section -->
+        <div class="card mb-4">
+          <div class="card-header bg-light">
+            <h5 class="mb-0">Observações</h5>
+          </div>
+          <div class="card-body">
+            @let notesRef = editForm.get('notes')!;
+            <div class="mb-3">
+              <label class="form-label" for="field_notes" ngbTooltip="Observações sobre o serviço">Observações</label>
+              <textarea class="form-control" name="notes" id="field_notes" data-cy="notes" formControlName="notes" rows="4"></textarea>
+              @if (notesRef.invalid && (notesRef.dirty || notesRef.touched)) {
+                <div>
+                  @if (editForm.get('notes')?.errors?.maxlength) {
+                    <small class="form-text text-danger">Este campo não pode ter mais de 2000 caracteres.</small>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Hidden audit fields -->
+        <div class="d-none">
+          <input type="text" class="form-control" name="createdBy" id="field_createdBy" data-cy="createdBy" formControlName="createdBy" />
+          <input
+            id="field_createdDate"
+            data-cy="createdDate"
+            type="datetime-local"
+            class="form-control"
+            name="createdDate"
+            formControlName="createdDate"
+            placeholder="YYYY-MM-DD HH:mm"
+          />
+          <input
+            type="text"
+            class="form-control"
+            name="lastModifiedBy"
+            id="field_lastModifiedBy"
+            data-cy="lastModifiedBy"
+            formControlName="lastModifiedBy"
+          />
+          <input
+            id="field_lastModifiedDate"
+            data-cy="lastModifiedDate"
+            type="datetime-local"
+            class="form-control"
+            name="lastModifiedDate"
+            formControlName="lastModifiedDate"
+            placeholder="YYYY-MM-DD HH:mm"
+          />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Salvar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

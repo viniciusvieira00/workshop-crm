@@ -1,0 +1,22 @@
+@if (client) {
+  <form name="deleteForm" (ngSubmit)="confirmDelete(client.id!)">
+    <div class="modal-header">
+      <h4 class="modal-title" data-cy="clientDeleteDialogHeading">Confirme a exclusão</h4>
+    </div>
+
+    <div class="modal-body">
+      <jhi-alert-error></jhi-alert-error>
+      <p id="jhi-delete-client-heading">Tem certeza de que deseja excluir Client {{ client.id }}?</p>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+        <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancelar</span>
+      </button>
+
+      <button id="jhi-confirm-delete-client" data-cy="entityConfirmDeleteButton" type="submit" class="btn btn-danger">
+        <fa-icon icon="times"></fa-icon>&nbsp;<span>Excluir</span>
+      </button>
+    </div>
+  </form>
+}

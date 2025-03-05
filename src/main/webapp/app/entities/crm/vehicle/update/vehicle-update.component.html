@@ -1,0 +1,564 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-vehicle-heading" data-cy="VehicleCreateUpdateHeading">
+        @if (editForm.controls.id.value !== null) {
+          <span>Editar Veículo</span>
+        } @else {
+          <span>Cadastrar Novo Veículo</span>
+        }
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" for="field_id">Código</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <!-- Seção de Informações Gerais -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h4>Informações Gerais</h4>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                @let licensePlateRef = editForm.get('licensePlate')!;
+                <div class="mb-3">
+                  <label class="form-label required" for="field_licensePlate" ngbTooltip="Formato: ABC1234 ou ABC1D23">Placa</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="licensePlate"
+                    id="field_licensePlate"
+                    data-cy="licensePlate"
+                    formControlName="licensePlate"
+                    placeholder="ABC1234"
+                  />
+                  @if (licensePlateRef.invalid && (licensePlateRef.dirty || licensePlateRef.touched)) {
+                    <div>
+                      @if (editForm.get('licensePlate')?.errors?.required) {
+                        <small class="form-text text-danger">O campo é obrigatório.</small>
+                      }
+                      @if (editForm.get('licensePlate')?.errors?.pattern) {
+                        <small class="form-text text-danger">Este campo deve seguir o formato de placa válido.</small>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                @let colorRef = editForm.get('color')!;
+                <div class="mb-3">
+                  <label class="form-label required" for="field_color">Cor</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="color"
+                    id="field_color"
+                    data-cy="color"
+                    formControlName="color"
+                    placeholder="Ex: Preto"
+                  />
+                  @if (colorRef.invalid && (colorRef.dirty || colorRef.touched)) {
+                    <div>
+                      @if (editForm.get('color')?.errors?.required) {
+                        <small class="form-text text-danger">O campo é obrigatório.</small>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                @let modelRef = editForm.get('model')!;
+                <div class="mb-3">
+                  <label class="form-label required" for="field_model">Modelo</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="model"
+                    id="field_model"
+                    data-cy="model"
+                    formControlName="model"
+                    placeholder="Ex: Gol"
+                  />
+                  @if (modelRef.invalid && (modelRef.dirty || modelRef.touched)) {
+                    <div>
+                      @if (editForm.get('model')?.errors?.required) {
+                        <small class="form-text text-danger">O campo é obrigatório.</small>
+                      }
+                      @if (editForm.get('model')?.errors?.minlength) {
+                        <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+                      }
+                      @if (editForm.get('model')?.errors?.maxlength) {
+                        <small class="form-text text-danger">Este campo não pode ter mais de 50 caracteres.</small>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                @let brandRef = editForm.get('brand')!;
+                <div class="mb-3">
+                  <label class="form-label required" for="field_brand">Marca</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="brand"
+                    id="field_brand"
+                    data-cy="brand"
+                    formControlName="brand"
+                    placeholder="Ex: Volkswagen"
+                  />
+                  @if (brandRef.invalid && (brandRef.dirty || brandRef.touched)) {
+                    <div>
+                      @if (editForm.get('brand')?.errors?.required) {
+                        <small class="form-text text-danger">O campo é obrigatório.</small>
+                      }
+                      @if (editForm.get('brand')?.errors?.minlength) {
+                        <small class="form-text text-danger">Este campo deve ter pelo menos 2 caracteres.</small>
+                      }
+                      @if (editForm.get('brand')?.errors?.maxlength) {
+                        <small class="form-text text-danger">Este campo não pode ter mais de 50 caracteres.</small>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                @let fabricationDateRef = editForm.get('fabricationDate')!;
+                <div class="mb-3">
+                  <label class="form-label required" for="field_fabricationDate">Data de Fabricação</label>
+                  <div class="input-group">
+                    <input
+                      id="field_fabricationDate"
+                      data-cy="fabricationDate"
+                      type="text"
+                      class="form-control"
+                      name="fabricationDate"
+                      ngbDatepicker
+                      #fabricationDateDp="ngbDatepicker"
+                      formControlName="fabricationDate"
+                      placeholder="DD/MM/AAAA"
+                    />
+                    <button type="button" class="btn btn-secondary" (click)="fabricationDateDp.toggle()">
+                      <fa-icon icon="calendar-alt"></fa-icon>
+                    </button>
+                  </div>
+                  @if (fabricationDateRef.invalid && (fabricationDateRef.dirty || fabricationDateRef.touched)) {
+                    <div>
+                      @if (editForm.get('fabricationDate')?.errors?.required) {
+                        <small class="form-text text-danger">O campo é obrigatório.</small>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                @let modelYearRef = editForm.get('modelYear')!;
+                <div class="mb-3">
+                  <label class="form-label required" for="field_modelYear">Ano do Modelo</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    name="modelYear"
+                    id="field_modelYear"
+                    data-cy="modelYear"
+                    formControlName="modelYear"
+                    placeholder="Ex: 2023"
+                  />
+                  @if (modelYearRef.invalid && (modelYearRef.dirty || modelYearRef.touched)) {
+                    <div>
+                      @if (editForm.get('modelYear')?.errors?.required) {
+                        <small class="form-text text-danger">O campo é obrigatório.</small>
+                      }
+                      @if (editForm.get('modelYear')?.errors?.min) {
+                        <small class="form-text text-danger">Este campo deve ser maior que 1900.</small>
+                      }
+                      @if (editForm.get('modelYear')?.errors?.max) {
+                        <small class="form-text text-danger">Este campo não pode ser maior que 2100.</small>
+                      }
+                      <small class="form-text text-danger" [hidden]="!editForm.get('modelYear')?.errors?.number"
+                        >Este campo é do tipo numérico.</small
+                      >
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                @let fuelTypeRef = editForm.get('fuelType')!;
+                <div class="mb-3">
+                  <label class="form-label required" for="field_fuelType">Tipo de Combustível</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="fuelType"
+                    id="field_fuelType"
+                    data-cy="fuelType"
+                    formControlName="fuelType"
+                    placeholder="Ex: Flex"
+                  />
+                  @if (fuelTypeRef.invalid && (fuelTypeRef.dirty || fuelTypeRef.touched)) {
+                    <div>
+                      @if (editForm.get('fuelType')?.errors?.required) {
+                        <small class="form-text text-danger">O campo é obrigatório.</small>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                @let statusRef = editForm.get('status')!;
+                <div class="mb-3">
+                  <label class="form-label required" for="field_status">Status</label>
+                  <select class="form-control" name="status" formControlName="status" id="field_status" data-cy="status">
+                    <option [ngValue]="null"></option>
+                    @for (vehicleStatus of vehicleStatusValues; track $index) {
+                      <option [value]="vehicleStatus">
+                        {{
+                          {
+                            null: '',
+                            AVAILABLE: 'Disponível',
+                            UNDER_MAINTENANCE: 'Em Manutenção',
+                            WAITING_MAINTENANCE: 'Aguardando Manutenção',
+                            OUT_OF_SERVICE: 'Fora de Serviço',
+                            DELIVERED_TO_CUSTOMER: 'Entregue ao Cliente',
+                          }[vehicleStatus]
+                        }}
+                      </option>
+                    }
+                  </select>
+                  @if (statusRef.invalid && (statusRef.dirty || statusRef.touched)) {
+                    <div>
+                      @if (editForm.get('status')?.errors?.required) {
+                        <small class="form-text text-danger">O campo é obrigatório.</small>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-12">
+                <div class="mb-3">
+                  <label class="form-label required" for="field_client">Cliente</label>
+                  <select
+                    class="form-control"
+                    id="field_client"
+                    data-cy="client"
+                    name="client"
+                    formControlName="client"
+                    [compareWith]="compareClient"
+                  >
+                    @if (editForm.get(['client'])!.value == null) {
+                      <option [ngValue]="null" selected></option>
+                    }
+                    @for (clientOption of clientsSharedCollection; track $index) {
+                      <option [ngValue]="clientOption">{{ clientOption.name }}</option>
+                    }
+                  </select>
+                  @if (editForm.get(['client'])!.invalid && (editForm.get(['client'])!.dirty || editForm.get(['client'])!.touched)) {
+                    <div>
+                      @if (editForm.get(['client'])?.errors?.required) {
+                        <small class="form-text text-danger">O campo é obrigatório.</small>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção de Informações Técnicas -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h4>Informações Técnicas</h4>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                @let renavamRef = editForm.get('renavam')!;
+                <div class="mb-3">
+                  <label class="form-label" for="field_renavam">Renavam</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="renavam"
+                    id="field_renavam"
+                    data-cy="renavam"
+                    formControlName="renavam"
+                    placeholder="Somente números (opcional)"
+                  />
+                  @if (renavamRef.invalid && (renavamRef.dirty || renavamRef.touched)) {
+                    <div>
+                      @if (editForm.get('renavam')?.errors?.pattern) {
+                        <small class="form-text text-danger">Este campo deve conter apenas números.</small>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                @let chassiNumberRef = editForm.get('chassiNumber')!;
+                <div class="mb-3">
+                  <label class="form-label" for="field_chassiNumber">Número do Chassi</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="chassiNumber"
+                    id="field_chassiNumber"
+                    data-cy="chassiNumber"
+                    formControlName="chassiNumber"
+                    placeholder="Opcional"
+                  />
+                  @if (chassiNumberRef.invalid && (chassiNumberRef.dirty || chassiNumberRef.touched)) {
+                    <div>
+                      @if (editForm.get('chassiNumber')?.errors?.pattern) {
+                        <small class="form-text text-danger">Este campo deve seguir o formato de chassi válido.</small>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção de Manutenção -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h4>Informações de Manutenção</h4>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                @let currentMileageRef = editForm.get('currentMileage')!;
+                <div class="mb-3">
+                  <label class="form-label required" for="field_currentMileage">Quilometragem Atual</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    name="currentMileage"
+                    id="field_currentMileage"
+                    data-cy="currentMileage"
+                    formControlName="currentMileage"
+                    placeholder="Ex: 15000"
+                  />
+                  @if (currentMileageRef.invalid && (currentMileageRef.dirty || currentMileageRef.touched)) {
+                    <div>
+                      @if (editForm.get('currentMileage')?.errors?.required) {
+                        <small class="form-text text-danger">O campo é obrigatório.</small>
+                      }
+                      @if (editForm.get('currentMileage')?.errors?.min) {
+                        <small class="form-text text-danger">Este campo deve ser maior que 0.</small>
+                      }
+                      <small class="form-text text-danger" [hidden]="!editForm.get('currentMileage')?.errors?.number"
+                        >Este campo é do tipo numérico.</small
+                      >
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label" for="field_lastMaintenanceDate">Data da Última Manutenção</label>
+                  <div class="input-group">
+                    <input
+                      id="field_lastMaintenanceDate"
+                      data-cy="lastMaintenanceDate"
+                      type="text"
+                      class="form-control"
+                      name="lastMaintenanceDate"
+                      ngbDatepicker
+                      #lastMaintenanceDateDp="ngbDatepicker"
+                      formControlName="lastMaintenanceDate"
+                      placeholder="DD/MM/AAAA (opcional)"
+                    />
+                    <button type="button" class="btn btn-secondary" (click)="lastMaintenanceDateDp.toggle()">
+                      <fa-icon icon="calendar-alt"></fa-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                @let lastMaintenanceMileageRef = editForm.get('lastMaintenanceMileage')!;
+                <div class="mb-3">
+                  <label class="form-label" for="field_lastMaintenanceMileage">Km da Última Manutenção</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    name="lastMaintenanceMileage"
+                    id="field_lastMaintenanceMileage"
+                    data-cy="lastMaintenanceMileage"
+                    formControlName="lastMaintenanceMileage"
+                    placeholder="Opcional"
+                  />
+                  @if (lastMaintenanceMileageRef.invalid && (lastMaintenanceMileageRef.dirty || lastMaintenanceMileageRef.touched)) {
+                    <div>
+                      @if (editForm.get('lastMaintenanceMileage')?.errors?.min) {
+                        <small class="form-text text-danger">Este campo deve ser maior que 0.</small>
+                      }
+                      <small class="form-text text-danger" [hidden]="!editForm.get('lastMaintenanceMileage')?.errors?.number"
+                        >Este campo é do tipo numérico.</small
+                      >
+                    </div>
+                  }
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label" for="field_nextMaintenanceDate">Data da Próxima Manutenção</label>
+                  <div class="input-group">
+                    <input
+                      id="field_nextMaintenanceDate"
+                      data-cy="nextMaintenanceDate"
+                      type="text"
+                      class="form-control"
+                      name="nextMaintenanceDate"
+                      ngbDatepicker
+                      #nextMaintenanceDateDp="ngbDatepicker"
+                      formControlName="nextMaintenanceDate"
+                      placeholder="DD/MM/AAAA (opcional)"
+                    />
+                    <button type="button" class="btn btn-secondary" (click)="nextMaintenanceDateDp.toggle()">
+                      <fa-icon icon="calendar-alt"></fa-icon>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                @let nextMaintenanceMileageRef = editForm.get('nextMaintenanceMileage')!;
+                <div class="mb-3">
+                  <label class="form-label" for="field_nextMaintenanceMileage">Km da Próxima Manutenção</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    name="nextMaintenanceMileage"
+                    id="field_nextMaintenanceMileage"
+                    data-cy="nextMaintenanceMileage"
+                    formControlName="nextMaintenanceMileage"
+                    placeholder="Opcional"
+                  />
+                  @if (nextMaintenanceMileageRef.invalid && (nextMaintenanceMileageRef.dirty || nextMaintenanceMileageRef.touched)) {
+                    <div>
+                      @if (editForm.get('nextMaintenanceMileage')?.errors?.min) {
+                        <small class="form-text text-danger">Este campo deve ser maior que 0.</small>
+                      }
+                      <small class="form-text text-danger" [hidden]="!editForm.get('nextMaintenanceMileage')?.errors?.number"
+                        >Este campo é do tipo numérico.</small
+                      >
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Seção de Observações -->
+        <div class="card mb-4">
+          <div class="card-header">
+            <h4>Observações</h4>
+          </div>
+          <div class="card-body">
+            @let descriptionRef = editForm.get('description')!;
+            <div class="mb-3">
+              <label class="form-label" for="field_description">Descrição</label>
+              <textarea
+                class="form-control"
+                name="description"
+                id="field_description"
+                data-cy="description"
+                formControlName="description"
+                rows="4"
+                placeholder="Informações adicionais sobre o veículo (opcional)"
+              ></textarea>
+              @if (descriptionRef.invalid && (descriptionRef.dirty || descriptionRef.touched)) {
+                <div>
+                  @if (editForm.get('description')?.errors?.maxlength) {
+                    <small class="form-text text-danger">Este campo não pode ter mais de 1000 caracteres.</small>
+                  }
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+
+        <!-- Campos de auditoria ocultos -->
+        <div class="d-none">
+          <input type="text" class="form-control" name="createdBy" id="field_createdBy" data-cy="createdBy" formControlName="createdBy" />
+          <input
+            id="field_createdDate"
+            data-cy="createdDate"
+            type="datetime-local"
+            class="form-control"
+            name="createdDate"
+            formControlName="createdDate"
+            placeholder="YYYY-MM-DD HH:mm"
+          />
+          <input
+            type="text"
+            class="form-control"
+            name="lastModifiedBy"
+            id="field_lastModifiedBy"
+            data-cy="lastModifiedBy"
+            formControlName="lastModifiedBy"
+          />
+          <input
+            id="field_lastModifiedDate"
+            data-cy="lastModifiedDate"
+            type="datetime-local"
+            class="form-control"
+            name="lastModifiedDate"
+            formControlName="lastModifiedDate"
+            placeholder="YYYY-MM-DD HH:mm"
+          />
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end mt-4">
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary me-2" (click)="previousState()">
+          <span>Cancelar</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <span>Salvar</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

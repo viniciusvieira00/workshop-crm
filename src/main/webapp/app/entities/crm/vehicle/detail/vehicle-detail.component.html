@@ -1,0 +1,306 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (vehicle(); as vehicleRef) {
+      <div>
+        <h2 data-cy="vehicleDetailsHeading"><span>Detalhes do Veículo</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <!-- Tabs de navegação -->
+        <ul class="nav nav-tabs mb-3">
+          <li class="nav-item">
+            <a class="nav-link" [class.active]="activeTab === 'details'" (click)="setActiveTab('details')" href="javascript:void(0)">
+              Detalhes
+            </a>
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link"
+              [class.active]="activeTab === 'serviceOrders'"
+              (click)="setActiveTab('serviceOrders')"
+              href="javascript:void(0)"
+            >
+              Ordens de Serviço ({{ serviceOrders.length }})
+            </a>
+          </li>
+        </ul>
+
+        <!-- Conteúdo da tab Detalhes -->
+        @if (activeTab === 'details') {
+          <!-- Seção de Informações Gerais -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h4>Informações Gerais</h4>
+            </div>
+            <div class="card-body">
+              <dl class="row">
+                <dt class="col-md-4">Código</dt>
+                <dd class="col-md-8">{{ vehicleRef.id }}</dd>
+
+                <dt class="col-md-4" ngbTooltip="Formato: ABC1234 ou ABC1D23">Placa</dt>
+                <dd class="col-md-8">{{ vehicleRef.licensePlate }}</dd>
+
+                <dt class="col-md-4">Modelo</dt>
+                <dd class="col-md-8">{{ vehicleRef.model }}</dd>
+
+                <dt class="col-md-4">Marca</dt>
+                <dd class="col-md-8">{{ vehicleRef.brand }}</dd>
+
+                <dt class="col-md-4">Cor</dt>
+                <dd class="col-md-8">{{ vehicleRef.color }}</dd>
+
+                <dt class="col-md-4">Ano do Modelo</dt>
+                <dd class="col-md-8">{{ vehicleRef.modelYear }}</dd>
+
+                <dt class="col-md-4">Status</dt>
+                <dd class="col-md-8">
+                  <span class="badge" [ngClass]="getVehicleStatusClass(vehicleRef.status ?? null)">
+                    {{ getVehicleStatusLabel(vehicleRef.status ?? null) }}
+                  </span>
+                </dd>
+
+                <dt class="col-md-4">Cliente</dt>
+                <dd class="col-md-8">
+                  @if (vehicleRef.client) {
+                    <div>
+                      <a [routerLink]="['/client', vehicleRef.client?.id, 'view']">{{ vehicleRef.client?.name }}</a>
+                    </div>
+                  } @else {
+                    <span class="text-muted">Não associado</span>
+                  }
+                </dd>
+              </dl>
+            </div>
+          </div>
+
+          <!-- Seção de Informações Técnicas -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h4>Informações Técnicas</h4>
+            </div>
+            <div class="card-body">
+              <dl class="row">
+                <dt class="col-md-4">Data de Fabricação</dt>
+                <dd class="col-md-8">
+                  <ng-container *ngIf="vehicleRef.fabricationDate; else noFabricationDate">
+                    {{ vehicleRef.fabricationDate | formatMediumDate }}
+                  </ng-container>
+                  <ng-template #noFabricationDate>
+                    <span class="text-muted">Não informado</span>
+                  </ng-template>
+                </dd>
+
+                <dt class="col-md-4">Tipo de Combustível</dt>
+                <dd class="col-md-8">{{ vehicleRef.fuelType }}</dd>
+
+                <dt class="col-md-4">Renavam</dt>
+                <dd class="col-md-8">{{ vehicleRef.renavam || 'Não informado' }}</dd>
+
+                <dt class="col-md-4">Número do Chassi</dt>
+                <dd class="col-md-8">{{ vehicleRef.chassiNumber || 'Não informado' }}</dd>
+              </dl>
+            </div>
+          </div>
+
+          <!-- Seção de Manutenção -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h4>Informações de Manutenção</h4>
+            </div>
+            <div class="card-body">
+              <dl class="row">
+                <dt class="col-md-4">Quilometragem Atual</dt>
+                <dd class="col-md-8">{{ vehicleRef.currentMileage }} km</dd>
+
+                <dt class="col-md-4">Data da Última Manutenção</dt>
+                <dd class="col-md-8">
+                  <ng-container *ngIf="vehicleRef.lastMaintenanceDate; else noLastMaintenanceDate">
+                    {{ vehicleRef.lastMaintenanceDate | formatMediumDate }}
+                  </ng-container>
+                  <ng-template #noLastMaintenanceDate>
+                    <span class="text-muted">Não informado</span>
+                  </ng-template>
+                </dd>
+
+                <dt class="col-md-4">Km da Última Manutenção</dt>
+                <dd class="col-md-8">
+                  <ng-container *ngIf="vehicleRef.lastMaintenanceMileage; else noLastMaintenanceMileage">
+                    {{ vehicleRef.lastMaintenanceMileage }} km
+                  </ng-container>
+                  <ng-template #noLastMaintenanceMileage>
+                    <span class="text-muted">Não informado</span>
+                  </ng-template>
+                </dd>
+
+                <dt class="col-md-4">Data da Próxima Manutenção</dt>
+                <dd class="col-md-8">
+                  <ng-container *ngIf="vehicleRef.nextMaintenanceDate; else noNextMaintenanceDate">
+                    {{ vehicleRef.nextMaintenanceDate | formatMediumDate }}
+                  </ng-container>
+                  <ng-template #noNextMaintenanceDate>
+                    <span class="text-muted">Não informado</span>
+                  </ng-template>
+                </dd>
+
+                <dt class="col-md-4">Km da Próxima Manutenção</dt>
+                <dd class="col-md-8">
+                  <ng-container *ngIf="vehicleRef.nextMaintenanceMileage; else noNextMaintenanceMileage">
+                    {{ vehicleRef.nextMaintenanceMileage }} km
+                  </ng-container>
+                  <ng-template #noNextMaintenanceMileage>
+                    <span class="text-muted">Não informado</span>
+                  </ng-template>
+                </dd>
+              </dl>
+            </div>
+          </div>
+
+          <!-- Seção de Observações -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h4>Observações</h4>
+            </div>
+            <div class="card-body">
+              <p>
+                <ng-container *ngIf="vehicleRef.description; else noDescription">
+                  {{ vehicleRef.description }}
+                </ng-container>
+                <ng-template #noDescription>
+                  <span class="text-muted">Nenhuma observação registrada.</span>
+                </ng-template>
+              </p>
+            </div>
+          </div>
+
+          <!-- Seção de Dados de Auditoria -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h4>Dados de Auditoria</h4>
+            </div>
+            <div class="card-body">
+              <dl class="row">
+                <dt class="col-md-4">Criado por</dt>
+                <dd class="col-md-8">
+                  <ng-container *ngIf="vehicleRef.createdBy; else noCreatedBy">
+                    {{ vehicleRef.createdBy }}
+                  </ng-container>
+                  <ng-template #noCreatedBy>
+                    <span class="text-muted">Não informado</span>
+                  </ng-template>
+                </dd>
+
+                <dt class="col-md-4">Data de criação</dt>
+                <dd class="col-md-8">
+                  @if (vehicleRef.createdDate) {
+                    {{ vehicleRef.createdDate | formatMediumDatetime }}
+                  } @else {
+                    <span class="text-muted">Não informado</span>
+                  }
+                </dd>
+
+                <dt class="col-md-4">Atualizado por</dt>
+                <dd class="col-md-8">
+                  <ng-container *ngIf="vehicleRef.lastModifiedBy; else noLastModifiedBy">
+                    {{ vehicleRef.lastModifiedBy }}
+                  </ng-container>
+                  <ng-template #noLastModifiedBy>
+                    <span class="text-muted">Não informado</span>
+                  </ng-template>
+                </dd>
+
+                <dt class="col-md-4">Data de atualização</dt>
+                <dd class="col-md-8">
+                  @if (vehicleRef.lastModifiedDate) {
+                    {{ vehicleRef.lastModifiedDate | formatMediumDatetime }}
+                  } @else {
+                    <span class="text-muted">Não informado</span>
+                  }
+                </dd>
+              </dl>
+            </div>
+          </div>
+        }
+
+        <!-- Conteúdo da tab Ordens de Serviço -->
+        @if (activeTab === 'serviceOrders') {
+          <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h4 class="mb-0">Ordens de Serviço</h4>
+              <a [routerLink]="['/service-order/new']" [queryParams]="{ vehicleId: vehicleRef.id }" class="btn btn-primary btn-sm">
+                <span>Nova Ordem de Serviço</span>
+              </a>
+            </div>
+            <div class="card-body">
+              @if (isLoadingServiceOrders) {
+                <div class="d-flex justify-content-center">
+                  <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Carregando...</span>
+                  </div>
+                </div>
+              } @else if (serviceOrders.length === 0) {
+                <div class="alert alert-warning">
+                  <span>Nenhuma ordem de serviço encontrada para este veículo.</span>
+                </div>
+              } @else {
+                <div class="table-responsive">
+                  <table class="table table-striped table-hover">
+                    <thead>
+                      <tr>
+                        <th>Código</th>
+                        <th>Tipo de Serviço</th>
+                        <th>Data de Criação</th>
+                        <th>Valor Total</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for (order of serviceOrders; track order.id) {
+                        <tr>
+                          <td>{{ order.id }}</td>
+                          <td>{{ order.type?.name }}</td>
+                          <td>{{ order.creationDate | formatMediumDatetime }}</td>
+                          <td>{{ order.totalCost | currency: 'BRL' }}</td>
+                          <td>
+                            <span class="badge" [ngClass]="getServiceOrderStatusClass(order.status ?? null)">
+                              {{ getServiceOrderStatusLabel(order.status ?? null) }}
+                            </span>
+                          </td>
+                          <td class="text-end">
+                            <div class="btn-group">
+                              <a [routerLink]="['/service-order', order.id, 'view']" class="btn btn-info btn-sm">
+                                <span>Ver</span>
+                              </a>
+                              <a [routerLink]="['/service-order', order.id, 'edit']" class="btn btn-primary btn-sm">
+                                <span>Editar</span>
+                              </a>
+                              <a [routerLink]="['/service-order', order.id, 'delete']" class="btn btn-danger btn-sm">
+                                <span>Excluir</span>
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <button type="submit" (click)="previousState()" class="btn btn-info me-2" data-cy="entityDetailsBackButton">
+          <span>Voltar</span>
+        </button>
+
+        <button type="button" [routerLink]="['/vehicle', vehicleRef.id, 'edit']" class="btn btn-primary">
+          <span>Editar</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>
