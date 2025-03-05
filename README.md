@@ -11,6 +11,7 @@ O Workshop CRM é uma aplicação web completa que oferece as seguintes funciona
 - **Catálogo de Produtos**: Gerenciamento de peças, óleos, filtros e outros itens utilizados nos serviços
 - **Ordens de Serviço**: Criação e acompanhamento de ordens de serviço, desde a abertura até a conclusão
 - **Tipos de Serviço**: Configuração de diferentes tipos de serviços oferecidos pela oficina com preços padronizados
+- **Dashboard Analítico**: Visualização de dados importantes do negócio através de gráficos interativos
 
 O sistema foi desenvolvido utilizando Spring Boot para o backend e Angular para o frontend, oferecendo uma interface moderna e responsiva.
 
@@ -18,6 +19,7 @@ O sistema foi desenvolvido utilizando Spring Boot para o backend e Angular para 
 
 - **Backend**: Spring Boot, Spring Data JPA, Spring Security
 - **Frontend**: Angular, Bootstrap
+- **Visualização de Dados**: Chart.js, ng2-charts
 - **Banco de Dados**: PostgreSQL
 - **Ferramentas**: JHipster, Liquibase, Maven
 
@@ -31,6 +33,13 @@ O sistema foi desenvolvido utilizando Spring Boot para o backend e Angular para 
 - **Tipos de Serviço**: Configuração de serviços padrão com preços pré-definidos
 - **Autenticação e Autorização**: Sistema de login com diferentes níveis de acesso
 - **Dados de Exemplo**: Conjunto de dados realistas para testes e demonstração
+- **Dashboard Analítico**:
+  - Implementação de gráficos interativos usando Chart.js
+  - KPIs de desempenho da oficina (faturamento, total de ordens de serviço)
+  - Visualização de ordens de serviço por status
+  - Análise de tipos de serviço mais realizados
+  - Visualização de faturamento por mês
+  - Visualização de clientes mais frequentes
 
 ### Próximas Implementações 🚀
 
@@ -41,12 +50,12 @@ O sistema foi desenvolvido utilizando Spring Boot para o backend e Angular para 
   - Lembretes de manutenções programadas
   - Confirmações de agendamentos
 
-- **Dashboard Analítico**:
+- **Aprimoramentos do Dashboard Analítico**:
 
-  - Implementação de gráficos interativos usando NgxCharts ou Chart.js
-  - KPIs de desempenho da oficina (faturamento, serviços mais realizados)
-  - Análise de tendências de serviços por período
-  - Visualização de clientes mais frequentes
+  - Filtros por período para análise de dados
+  - Exportação de relatórios em PDF e Excel
+  - Comparativos de desempenho entre períodos
+  - Previsões de faturamento baseadas em tendências
 
 - **Sistema de Feedback**:
 
@@ -136,9 +145,18 @@ O sistema vem configurado com dois usuários para testes:
    - Salve a ordem de serviço
 
 6. **Acompanhamento de Ordens de Serviço**:
+
    - Acesse o menu "Ordens de Serviço" para visualizar todas as ordens
    - Utilize os filtros para encontrar ordens específicas
    - Atualize o status das ordens conforme o andamento do serviço
+
+7. **Visualização do Dashboard Analítico**:
+   - Acesse a página inicial do sistema para visualizar o dashboard
+   - Analise os KPIs de desempenho da oficina
+   - Visualize os gráficos de ordens de serviço por status
+   - Acompanhe os tipos de serviço mais realizados
+   - Monitore o faturamento mensal
+   - Identifique os clientes mais frequentes
 
 ### Dicas de Uso
 
@@ -146,6 +164,7 @@ O sistema vem configurado com dois usuários para testes:
 - Registre detalhadamente as observações nas ordens de serviço
 - Utilize os filtros de busca para localizar rapidamente informações
 - Acompanhe regularmente as ordens de serviço em andamento
+- Consulte o dashboard para obter insights sobre o desempenho do negócio
 
 ## Dados de Exemplo
 
